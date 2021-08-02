@@ -1,0 +1,28 @@
+{
+  "schema": "iglu:com.snowplowanalytics.iglu/resolver-config/jsonschema/1-0-0",
+  "data": {
+    "cacheSize": 500,
+    "repositories": [
+      {
+        "name": "Iglu Central",
+        "priority": 0,
+        "vendorPrefixes": ["com.snowplowanalytics"],
+        "connection": {
+          "http": {
+            "uri": "http://iglucentral.com"
+          }
+        }
+      },
+      {
+        "name": "this example repository",
+        "priority": 1,
+        "vendorPrefixes": ["test.example.iglu"],
+        "connection": {
+          "http": {
+            "uri": "https://raw.githubusercontent.com/snowplow-incubator/snowplow-ruby-tracker-examples/main/public/iglu"
+          }
+        }
+      }
+    ]
+  }
+}
