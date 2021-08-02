@@ -1,0 +1,32 @@
+<% content_for(:page_title) { "Rails Example: Shop" } %>
+
+<section id="shop">
+  <h2>Going skiing?</h2>
+  <p>Stock up here.</p>
+  <%= image_tag("skis.jpg", class: "product-img") %>
+  <hr/>
+  <div class="basket">
+    <h4>Basket</h4>
+    <p>
+      <span class="item-no">0 items in basket.</span><br/>
+      Total: £<span class="order-total">0</span>
+      <%= button_to "Purchase", home_shop_path, remote:true, method: :get, disabled: true %>
+    </p>
+  </div>
+  <hr/>
+  <div class="products">
+    <p class="shop-item">Blue skis (size M)<br/>£100.00
+      <%= button_to "Add to basket", home_shop_path, remote:true, method: :get %>
+    </p>
+    <p class="shop-item">Green skis (size L)<br/>£149.99
+      <%= button_to "Add to basket", home_shop_path, remote:true, method: :get %>
+    </p>
+    <p class="shop-item">White and brown skis (size M)<br/>£235.00
+      <%= button_to "Add to basket", home_shop_path, remote:true, method: :get %>
+    </p>
+    <p class="shop-item">Ski poles (white)<br/>£39.80
+      <%= button_to "Add to basket", home_shop_path, remote:true, method: :get %>
+    </p>
+  </div>
+
+</section>
