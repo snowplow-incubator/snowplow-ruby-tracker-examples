@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for?(:page_title) ? yield(:page_title) : "Rails Example" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <script async=1>
+      <%= render "shared/js_tracker" %>
+    </script>
+
+  </head>
+
+  <body>
+    <%= render "shared/navbar" %>
+    <%= render "shared/snowflakes" %>
+    <main class="container">
+      <%= yield %>
+    </main>
+  </body>
+
+</html>
