@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  after_action :track_page_view, only: %i[index about history]
+  after_action :track_page_view, only: %i[index about shop]
 
   def index
   end
@@ -7,17 +7,27 @@ class HomeController < ApplicationController
   def about
   end
 
-  def history
+  def shop
+  end
+
+  # POST
+  def track_self_describing
+    schema = "iglu:test.example.iglu/skiing_turn/jsonschema/1-0-0"
+    event_json = SnowplowTracker::SelfDescribingJson.new(
+      schema, { turnType: "snowplough" }
+    )
+    Snowplow.instance.tracker.track_self_describing_event(event_json)
   end
 
   # POST
   def track_page_view
-    Tracker.instance.page_view(request.original_url, request.headers["Referer"])
+    page_title = nil
+    Snowplow.instance.tracker.track_page_view(request.original_url, page_title, request.headers["Referer"])
   end
 
   # POST
   def track_screen_view
-    Tracker.instance.screen_view(params[:name], params[:id])
+    Snowplow.instance.tracker.track_screen_view(params[:name], params[:id])
   end
 
   # POST
@@ -39,17 +49,11 @@ class HomeController < ApplicationController
                "quantity" => 1,
                "name" => "watering can"
              }]
-    Tracker.instance.ecommerce(transaction, items)
+    Snowplow.instance.tracker.track_ecommerce_transaction(transaction, items)
   end
 
   # POST
   def track_struct
-    Tracker.instance.struct("test_event", "click")
-  end
-
-  # POST
-  def track_self_describing
-    schema = "iglu:test.example.iglu/skiing_turn/jsonschema/1-0-0"
-    Tracker.instance.self_describing(schema, { turnType: "snowplough" })
+    Snowplow.instance.tracker.track_struct_event("test_event", "click")
   end
 end
