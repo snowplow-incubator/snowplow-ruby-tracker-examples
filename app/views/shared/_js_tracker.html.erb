@@ -17,7 +17,7 @@
 snowplow('newTracker', 'sp', '0.0.0.0:9090');
 
 snowplow('enableActivityTracking', {
-  minimumVisitLength: 30,
+  minimumVisitLength: 10,
   heartbeatDelay: 10
 });
 snowplow('trackPageView');
