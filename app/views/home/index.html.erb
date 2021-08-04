@@ -6,32 +6,32 @@
     <div class="div1"><%= image_tag("skiing.jpg") %></div>
     <div class="div2"><p>Emit Ruby tracker events!</p></div>
     <div class="div3">
+      <%= link_to "Self Describing/Custom",
+        track_self_describing_path, method: :post,
+        role: "button", remote: true
+      %>
+    </div>
+    <div class="div4">
       <%= link_to "Page View",
         track_page_view_path, method: :post,
         role: "button", remote: true
       %>
     </div>
-    <div class="div4">
+    <div class="div5">
       <%= link_to "Screen View",
         track_screen_view_path(name: "Home#index", id: "screen001"), method: :post,
         role: "button", remote: true
       %>
     </div>
-    <div class="div5">
+    <div class="div6">
       <%= link_to "eCommerce",
         track_ecommerce_path, method: :post,
         role: "button", remote: true
       %>
     </div>
-    <div class="div6">
+    <div class="div7">
       <%= link_to "Struct",
         track_struct_path, method: :post,
-        role: "button", remote: true
-      %>
-    </div>
-    <div class="div7">
-      <%= link_to "Self Describing",
-        track_self_describing_path, method: :post,
         role: "button", remote: true
       %>
     </div>

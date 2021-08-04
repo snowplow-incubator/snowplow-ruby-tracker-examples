@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   get "home/index"
   get "home/about"
-  get "home/history"
+  get "home/shop"
 
   post "track_page_view", to: "home#track_page_view"
   post "track_screen_view", to: "home#track_screen_view"
