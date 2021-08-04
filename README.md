@@ -4,7 +4,7 @@ An example of how to incorporate [Snowplow](https://snowplowanalytics.com/) trac
 
 ### Quick Start
 
-The [Ruby](https://github.com/snowplow/snowplow-ruby-tracker) and [JavaScript](https://github.com/snowplow/snowplow-javascript-tracker) trackers are configured to use [Snowplow Micro](https://github.com/snowplow-incubator/snowplow-micro) as event collector. The Micro config files are included in the `snowplow-micro` folder.
+The [Ruby](https://github.com/snowplow/snowplow-ruby-tracker) and [JavaScript](https://github.com/snowplow/snowplow-javascript-tracker) trackers are configured to use [Snowplow Micro](https://github.com/snowplow-incubator/snowplow-micro) as the event collector. The Micro config files are included in the `snowplow-micro` folder.
 
 Start Micro:
 
