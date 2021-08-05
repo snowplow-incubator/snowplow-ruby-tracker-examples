@@ -1,10 +1,8 @@
 <nav>
-  <ul>
-    <li><%= link_to home_index_path, class: "navbar-title navbar-logo" do %>
-      <%= image_tag "snowplow-logo.png" %>
-      <% end %>
-    </li>
-  </ul>
+  <%= link_to home_index_path, class: "navbar-title navbar-logo" do %>
+    <%= image_tag "snowplow-logo.png" %>
+  <% end %>
+
   <ul>
     <li><%= link_to "Shop", home_shop_path, class: "navbar-link secondary" %></li>
     <li><%= link_to "About", home_about_path, class: "navbar-link secondary" %></li>
