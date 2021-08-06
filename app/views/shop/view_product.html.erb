@@ -1,0 +1,15 @@
+<% content_for(:page_title) { "Rails Example: Shop - #{@product["title"]}" }%>
+
+<section>
+  <%= render "shared/shopping_basket" %>
+  <hr/>
+  <div class="single-product">
+    <h3><%= @product["title"] %></h3>
+    <p><%= @product["description"][1..-2] %></p>
+    <p><%= @product["display_price"].html_safe %></p>
+    <%= render partial: "shared/add_to_basket",
+      locals: { product: @product }
+    %>
+  </div>
+  <%= image_tag("skis.jpg", class: "product-img") %>
+</section>

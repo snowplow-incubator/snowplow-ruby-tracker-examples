@@ -1,0 +1,25 @@
+<% content_for(:page_title) { "Rails Example: Shop" } %>
+
+<section id="shop">
+  <h2>Going skiing?</h2>
+  <p>Stock up here.</p>
+  <%= image_tag("skis.jpg", class: "product-img") %>
+  <hr/>
+
+  <%= render "shared/shopping_basket" %>
+
+  <hr/>
+  <div class="products">
+    <% @products.map do |item, details| %>
+
+    <span class="shop-item">
+      <%= link_to "#{details["title"]}<br/>#{details["display_price"]}".html_safe,
+        product_path(item)
+      %>
+      <%= render partial: "shared/add_to_basket",
+        locals: { product: details }
+      %>
+    </span>
+    <% end %>
+  </div>
+</section>

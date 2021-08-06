@@ -22,6 +22,16 @@
             "uri": "https://raw.githubusercontent.com/snowplow-incubator/snowplow-ruby-tracker-examples/main/public/iglu"
           }
         }
+      },
+      {
+        "name": "this example repository on branch",
+        "priority": 5,
+        "vendorPrefixes": ["test.example.iglu"],
+        "connection": {
+          "http": {
+            "uri": "https://raw.githubusercontent.com/snowplow-incubator/snowplow-ruby-tracker-examples/shop/public/iglu"
+          }
+        }
       }
     ]
   }
