@@ -1,13 +1,10 @@
 class HomeController < ApplicationController
-  after_action :track_page_view, only: %i[index about shop]
+  after_action :track_page_view, only: %i[index about]
 
   def index
   end
 
   def about
-  end
-
-  def shop
   end
 
   # POST
@@ -17,12 +14,6 @@ class HomeController < ApplicationController
       schema, { turnType: "snowplough" }
     )
     Snowplow.instance.tracker.track_self_describing_event(event_json)
-  end
-
-  # POST
-  def track_page_view
-    page_title = nil
-    Snowplow.instance.tracker.track_page_view(request.original_url, page_title, request.headers["Referer"])
   end
 
   # POST
