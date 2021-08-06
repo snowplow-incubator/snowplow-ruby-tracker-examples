@@ -2,7 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
-.navbar-title {
+.navbar-logo {
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.navbar-link {
   font-size: 1.3rem;
 }
 
@@ -10,7 +15,7 @@
   display: flex;
 }
 
-img {
+.main-image {
   width: 80%;
   max-width: 600px;
   border-radius: 1.5%;
