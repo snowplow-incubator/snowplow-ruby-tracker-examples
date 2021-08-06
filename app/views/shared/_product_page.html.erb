@@ -1,0 +1,12 @@
+<section>
+  <%= render "shared/shopping_basket" %>
+  <hr/>
+  <div class="single-product">
+    <h3><%= product[:title].html_safe %></h3>
+    <p><%= product[:description].html_safe %></p>
+    <p><%= product[:price].html_safe %></p>
+      <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
+  </div>
+  <%= image_tag("skis.jpg", class: "product-img") %>
+
+</section>

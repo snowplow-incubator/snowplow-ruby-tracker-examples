@@ -11,31 +11,20 @@
   <hr/>
   <div class="products">
     <p class="shop-item">
-      <%= link_to(
-        "Blue skis (size M)<br/>£100.00".html_safe,
-        shop_blue_skis_path)
-      %>
+      <%= link_to "#{@products[:blue_skis][:title]}<br/>#{@products[:blue_skis][:price]}".html_safe, shop_blue_skis_path %>
       <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
     </p>
     <p class="shop-item">
-      <%= link_to "Green skis (size L)<br/>£149.99".html_safe,
-        shop_green_skis_path
-      %>
+      <%= link_to "#{@products[:green_skis][:title]}<br/>#{@products[:green_skis][:price]}".html_safe, shop_green_skis_path %>
       <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
     </p>
     <p class="shop-item">
-      <%= link_to(
-        "White and brown skis (size M) [SALE]<br/><strike>£235.00</strike> £84.00".html_safe,
-        shop_brown_skis_path)
-      %>
+      <%= link_to "#{@products[:brown_skis][:title]}<br/>#{@products[:brown_skis][:price]}".html_safe, shop_brown_skis_path %>
       <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
     </p>
     <p class="shop-item">
-      <%= link_to "Ski poles (white)<br/>£39.80".html_safe,
-        shop_white_poles_path
-      %>
+      <%= link_to "#{@products[:white_poles][:title]}<br/>#{@products[:white_poles][:price]}".html_safe, shop_white_poles_path %>
       <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
     </p>
   </div>
-
 </section>

@@ -1,2 +1,3 @@
-<h1>Shop#green_skis</h1>
-<p>Find me in app/views/shop/green_skis.html.erb</p>
+<% content_for(:page_title) { "Rails Example: Shop - Green Skis" } %>
+
+<%= render partial: "shared/product_page", locals: { product: @product } %>
