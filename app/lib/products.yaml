@@ -1,0 +1,63 @@
+---
+blue_skis:
+  productId: 10234
+  sku: SKI-BL123-M
+  category: "skis"
+  brand: "Slopes R Us"
+  size: "M"
+  colour: "blue"
+  year: "2021"
+  sale: false
+  price: 300.00
+  original_price: 300.00
+  title: "Blue skis (size M)"
+  description: >-
+    "Attractive blue medium-weight skis, size M (167cm). Very stable and
+    ideal for beginners. Suitable for all mountain conditions."
+
+green_skis:
+  productId: 10438
+  sku: SKI-GR321-S
+  category: "skis"
+  brand: "Slopes R Us"
+  size: "S"
+  colour: "green"
+  year: "2021"
+  sale: false
+  price: 449.99
+  original_price: 449.99
+  title: "Green skis (size S)"
+  description: >-
+    "Flexible, lightweight green skis, size S (147cm). Perfect for the piste."
+
+brown_skis:
+  productId: 10116
+  sku: SKI-BR555-M
+  category: "skis"
+  brand: "Snowy"
+  size: "M"
+  colour: "brown/white"
+  year: "2019"
+  sale: true
+  price: 184.00
+  original_price: 335.00
+  title: "White and brown skis (size M) [SALE]"
+  description: >-
+    "We need to make space in our warehouse, so don't miss these
+    last season all-terrain brown and white skis, size M (165cm),
+    now reduced in price! A fantastic set of skis with perfect sidecut shape."
+
+white_poles:
+  productId: 20057
+  sku: ACC-WH044-M
+  category: "poles"
+  brand: "Snowy"
+  size: "M"
+  colour: "white"
+  year: "2021"
+  sale: false
+  price: 59.80
+  original_price: 59.80
+  title: "Ski poles (white)"
+  description: >-
+    "All-rounder white ski poles. Great for beginners."
