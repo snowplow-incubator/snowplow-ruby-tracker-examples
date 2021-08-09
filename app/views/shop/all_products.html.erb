@@ -10,21 +10,15 @@
 
   <hr/>
   <div class="products">
-    <p class="shop-item">
-      <%= link_to "#{@products[:blue_skis][:title]}<br/>#{@products[:blue_skis][:price]}".html_safe, shop_blue_skis_path %>
-      <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
-    </p>
-    <p class="shop-item">
-      <%= link_to "#{@products[:green_skis][:title]}<br/>#{@products[:green_skis][:price]}".html_safe, shop_green_skis_path %>
-      <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
-    </p>
-    <p class="shop-item">
-      <%= link_to "#{@products[:brown_skis][:title]}<br/>#{@products[:brown_skis][:price]}".html_safe, shop_brown_skis_path %>
-      <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
-    </p>
-    <p class="shop-item">
-      <%= link_to "#{@products[:white_poles][:title]}<br/>#{@products[:white_poles][:price]}".html_safe, shop_white_poles_path %>
-      <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get %>
-    </p>
+    <% @products.map do |item, details| %>
+
+    <%# All items going to blue skis path currently! %>
+    <span class="shop-item">
+      <%= link_to "#{details["title"]}<br/>#{details["display_price"]}".html_safe,
+        product_path(details["path"])
+      %>
+      <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get, class: "basket-add", data: { price: details[:price] } %>
+    </span>
+    <% end %>
   </div>
 </section>
