@@ -5,10 +5,7 @@ Rails.application.routes.draw do
   get "home/about"
 
   get "shop/all_products"
-  get "shop/blue_skis"
-  get "shop/green_skis"
-  get "shop/brown_skis"
-  get "shop/white_poles"
+  get "shop/:product_name", to: "shop#view_product", as: "product"
   get "shop/confirmation"
 
   post "track_page_view", to: "application#track_page_view"
