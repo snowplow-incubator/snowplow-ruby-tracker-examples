@@ -14,7 +14,6 @@ blue_skis:
   description: >-
     "Attractive blue medium-weight skis, size M (167cm). Very stable and
     ideal for beginners. Suitable for all mountain conditions."
-  path: "blue_skis"
 
 green_skis:
   productId: 10438
@@ -30,7 +29,6 @@ green_skis:
   title: "Green skis (size S)"
   description: >-
     "Flexible, lightweight green skis, size S (147cm). Perfect for the piste."
-  path: "green_skis"
 
 brown_skis:
   productId: 10116
@@ -48,7 +46,6 @@ brown_skis:
     "We need to make space in our warehouse, so don't miss these
     last season all-terrain brown and white skis, size M (165cm),
     now reduced in price! A fantastic set of skis with perfect sidecut shape."
-  path: "brown_skis"
 
 white_poles:
   productId: 20057
@@ -64,4 +61,3 @@ white_poles:
   title: "Ski poles (white)"
   description: >-
     "All-rounder white ski poles. Great for beginners."
-  path: "white_poles"
