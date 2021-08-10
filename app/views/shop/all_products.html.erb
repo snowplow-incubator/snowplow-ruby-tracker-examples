@@ -16,7 +16,9 @@
       <%= link_to "#{details["title"]}<br/>#{details["display_price"]}".html_safe,
         product_path(item)
       %>
-      <%= render partial: "shared/add_to_basket", locals: { price: details["price"] } %>
+      <%= render partial: "shared/add_to_basket",
+        locals: { product: details }
+      %>
     </span>
     <% end %>
   </div>
