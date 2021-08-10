@@ -2,8 +2,8 @@
     <h4>Basket</h4>
     <p>
       <span id="order-count">0</span> items in basket.<br/>
-      Total: £<span id="order-total">0</span>
-      <span id="basket-items"></span>
+      Total: £<span id="order-total">0</span><br/>
+      <ul><span id="basket-items"></span></ul>
       <%= button_to "Purchase", shop_confirmation_path, remote:true, method: :get, disabled: true %>
     </p>
   </div>
