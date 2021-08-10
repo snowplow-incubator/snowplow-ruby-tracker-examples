@@ -7,7 +7,7 @@
     <h3><%= @product["title"] %></h3>
     <p><%= @product["description"][1..-2] %></p>
     <p><%= @product["display_price"].html_safe %></p>
-      <%= button_to "Add to basket", shop_all_products_path, remote:true, method: :get, class: "basket-add" %>
+    <%= render partial: "shared/add_to_basket", locals: { price: @product["price"] } %>
   </div>
   <%= image_tag("skis.jpg", class: "product-img") %>
 </section>
