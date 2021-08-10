@@ -19,7 +19,7 @@
         "vendorPrefixes": ["test.example.iglu"],
         "connection": {
           "http": {
-            "uri": "https://raw.githubusercontent.com/snowplow-incubator/snowplow-ruby-tracker-examples/main/public/iglu"
+            "uri": "https://raw.githubusercontent.com/snowplow-incubator/snowplow-ruby-tracker-examples/shop/public/iglu"
           }
         }
       }

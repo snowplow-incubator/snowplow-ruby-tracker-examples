@@ -9,11 +9,11 @@
     },
     "type": "object",
     "properties": {
-        "type": {
+        "action": {
             "type": "string",
             "enum": ["add", "remove"]
         }
     },
-    "required": ["type"],
+    "required": ["action"],
     "additionalProperties": false
 }

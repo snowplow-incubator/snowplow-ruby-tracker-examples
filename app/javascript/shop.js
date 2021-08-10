@@ -18,12 +18,31 @@ document.addEventListener("turbolinks:load", function () {
       const isOnSale = element.form.elements.on_sale.value;
       const originalPrice = element.form.elements.original_price.value;
 
-      // console.log(name);
-      // console.log(element.form.elements);
-
       updateTotal(price);
       updateCount();
-      addItemToBasket(name);
+      showNameInBasket(name);
+
+      // Tracking the basket addition
+      window.snowplow("trackSelfDescribingEvent", {
+        event: {
+          schema: "iglu:test.example.iglu/basket_action_event/jsonschema/1-0-0",
+          data: {
+            type: "add",
+          },
+        },
+        context: [
+          {
+            schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-0",
+            data: {
+              sku: sku,
+              name: name,
+              price: parseFloat(price),
+              onSale: isOnSale,
+              startPrice: originalPrice,
+            },
+          },
+        ],
+      });
     });
   });
 });
@@ -43,7 +62,7 @@ function updateCount() {
   amount.innerHTML = basketCount;
 }
 
-function addItemToBasket(name) {
+function showNameInBasket(name) {
   const basketContents = document.getElementById("basket-items");
   basketContents.insertAdjacentHTML("afterbegin", `<li>${name}</li>`);
 }
