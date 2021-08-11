@@ -15,21 +15,22 @@ class ShopController < ApplicationController
   # POST
   def purchase
     p "in purchase 💸"
-    # p params["details"]
-    # p JSON.parse(params["details"])
+    order_id = "ABC-123"
+
+    # tracking goes here
 
     redirect_to shop_confirmation_path
   end
 
   private #------------------------------------------
 
+  # We chose not to use a database/CRUD layer for this demo app
+  # to reduce complexity and the number of dependencies.
+  # Product details are stored in a single file instead
   def product_details
     import.each_value { |info| info["display_price"] = display_price(info) }
   end
 
-  # We chose not to use a database/CRUD layer for this demo app
-  # to reduce complexity and the number of dependencies.
-  # Product details are stored in a single file instead
   def import
     path = File.join(Rails.root, "app", "lib", "products.yaml")
     YAML.safe_load(File.read(path))
