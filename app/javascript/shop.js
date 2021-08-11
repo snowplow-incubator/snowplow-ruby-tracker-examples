@@ -2,7 +2,8 @@ console.log("in Shop.js");
 
 document.addEventListener("turbolinks:load", function () {
   updateTotal(0);
-  updateCount();
+  updateCount(0);
+  updateContents();
 
   const addToBasketButtons = document.querySelectorAll(".basket-add");
 
@@ -15,14 +16,16 @@ document.addEventListener("turbolinks:load", function () {
       );
       const name = element.form.elements.name.value;
       const sku = element.form.elements.sku.value;
-      const isOnSale = element.form.elements.on_sale.value;
+      const onSale = element.form.elements.on_sale.value;
       const originalPrice = element.form.elements.original_price.value;
 
       updateTotal(price);
-      updateCount();
-      showNameInBasket(name);
+      updateCount(1);
+      updateContents(name);
+      basketEntities.push(productEntityData(name, sku, onSale, originalPrice));
+      console.log(basketEntities);
 
-      // Tracking the basket addition
+      // Tracking a product being added to the basket
       window.snowplow("trackSelfDescribingEvent", {
         event: {
           schema: "iglu:test.example.iglu/basket_action_event/jsonschema/1-0-0",
@@ -30,6 +33,7 @@ document.addEventListener("turbolinks:load", function () {
             type: "add",
           },
         },
+        // The specific product is included as an Entity in the Event context
         context: [
           {
             schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-0",
@@ -37,7 +41,7 @@ document.addEventListener("turbolinks:load", function () {
               sku: sku,
               name: name,
               price: parseFloat(price),
-              onSale: isOnSale,
+              onSale: onSale,
               startPrice: originalPrice,
             },
           },
@@ -45,10 +49,19 @@ document.addEventListener("turbolinks:load", function () {
       });
     });
   });
+
+  const purchaseForm = document.getElementById("purchase-form");
+  purchaseForm.addEventListener("click", () => {
+    console.log("clicked on purchase form");
+    const purchaseDetails = document.getElementById("details");
+    purchaseDetails.setAttribute("value", basketEntities);
+  });
 });
 
 let basketTotal = 0;
 let basketCount = 0;
+let basketContentsHTML = "";
+let basketEntities = [];
 
 function updateTotal(price) {
   basketTotal += price;
@@ -56,13 +69,31 @@ function updateTotal(price) {
   total.innerHTML = basketTotal;
 }
 
-function updateCount() {
-  basketCount += 1;
+function updateCount(num) {
+  basketCount += num;
   const amount = document.getElementById("order-count");
   amount.innerHTML = basketCount;
+
+  if (basketCount === 1) {
+    const purchaseSubmit = document.getElementById("purchase-submit");
+    purchaseSubmit.removeAttribute("disabled");
+  }
 }
 
-function showNameInBasket(name) {
-  const basketContents = document.getElementById("basket-items");
-  basketContents.insertAdjacentHTML("afterbegin", `<li>${name}</li>`);
+function updateContents(name) {
+  if (name !== undefined) basketContentsHTML += `<li>${name}</li>`;
+
+  const items = document.getElementById("basket-items");
+  items.innerHTML = basketContentsHTML;
+}
+
+function productEntityData(sku, name, price, onSale, originalPrice) {
+  return {
+    sku: sku,
+    name: name,
+    price: parseFloat(price),
+    onSale: onSale,
+    startPrice: originalPrice,
+    quantity: 1,
+  };
 }

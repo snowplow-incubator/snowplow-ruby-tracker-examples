@@ -1,5 +1,5 @@
 class ShopController < ApplicationController
-  after_action :track_page_view, except: :add_to_basket
+  after_action :track_page_view, only: %i[all_products view_product confirmation]
 
   def all_products
     @products = product_details
@@ -13,7 +13,12 @@ class ShopController < ApplicationController
   end
 
   # POST
-  def add_to_basket
+  def purchase
+    p "in purchase 💸"
+    # p params["details"]
+    # p JSON.parse(params["details"])
+
+    redirect_to shop_confirmation_path
   end
 
   private #------------------------------------------

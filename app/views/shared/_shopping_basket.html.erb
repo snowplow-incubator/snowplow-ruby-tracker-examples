@@ -4,6 +4,11 @@
       <span id="order-count">0</span> items in basket.<br/>
       Total: £<span id="order-total">0</span><br/>
       <ul><span id="basket-items"></span></ul>
-      <%= button_to "Purchase", shop_confirmation_path, remote:true, method: :get, disabled: true %>
+
+      <%= form_with url: purchase_path, id:"purchase-form",
+        method: :post, remote:true, local: false do |form| %>
+        <%= form.hidden_field :details, value: '{"json": { "test": "hello"}}'%>
+        <%= form.submit "Purchase", id: "purchase-submit", disabled: true %>
+      <% end %>
     </p>
   </div>
