@@ -1,5 +1,5 @@
 class ShopController < ApplicationController
-  after_action :track_page_view, only: %i[all_products view_product confirmation]
+  after_action :track_page_view, only: %i[all_products view_product]
 
   def all_products
     @products = product_details
@@ -9,9 +9,6 @@ class ShopController < ApplicationController
     @product = product_details[params["product_name"]]
   end
 
-  def confirmation
-  end
-
   # POST
   def purchase
     p "in purchase 💸"
@@ -19,7 +16,7 @@ class ShopController < ApplicationController
 
     # tracking goes here
 
-    redirect_to shop_confirmation_path
+    redirect_to home_confirmation_path
   end
 
   private #------------------------------------------
