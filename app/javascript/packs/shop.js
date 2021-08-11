@@ -30,7 +30,7 @@ document.addEventListener("turbolinks:load", function () {
         event: {
           schema: "iglu:test.example.iglu/basket_action_event/jsonschema/1-0-0",
           data: {
-            type: "add",
+            action: "add",
           },
         },
         // The specific product is included as an Entity in the Event context
@@ -41,8 +41,9 @@ document.addEventListener("turbolinks:load", function () {
               sku: sku,
               name: name,
               price: parseFloat(price),
-              onSale: onSale,
-              startPrice: originalPrice,
+              onSale: onSale === "true",
+              startPrice: parseFloat(originalPrice),
+              quantity: 1,
             },
           },
         ],
@@ -92,8 +93,8 @@ function productEntityData(sku, name, price, onSale, originalPrice) {
     sku: sku,
     name: name,
     price: parseFloat(price),
-    onSale: onSale,
-    startPrice: originalPrice,
+    onSale: onSale === "true",
+    startPrice: parseFloat(originalPrice),
     quantity: 1,
   };
 }
