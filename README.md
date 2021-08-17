@@ -12,7 +12,7 @@ Start Micro:
 docker run --mount type=bind,source=$(pwd)/snowplow-micro,destination=/config -p 9090:9090 snowplow/snowplow-micro:1.1.2 --collector-config /config/micro.conf --iglu /config/iglu.json
 ```
 
-Requirements: Ruby 3.0, Yarn, and Bundle.
+Requirements: Ruby 3.0, Yarn, Bundle, and Cypress.
 Install dependencies: `yarn install` and `bundle install`  
 Run: `rails s`  
 Run tests: `rspec`
