@@ -24,9 +24,15 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-const nothing = null;
+const BADEND = "http://localhost:9090/micro/bad";
 
 Cypress.Commands.add("badEvents", () => {
-  console.log("in badEvents");
-  return nothing;
+  cy.request(BADEND).then((response) => {
+    assert(true, "Checking for bad events");
+    if (response.body.length === 0) {
+      return null;
+    } else {
+      return response.body.length;
+    }
+  });
 });
