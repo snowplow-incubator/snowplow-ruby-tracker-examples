@@ -12,7 +12,7 @@
   <div class="products">
     <% @products.map do |item, details| %>
 
-    <span class="shop-item">
+    <span class="shop-item <%= item %>">
       <%= link_to "#{details["title"]}<br/>#{details["display_price"]}".html_safe,
         product_path(item)
       %>
