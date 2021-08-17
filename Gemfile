@@ -34,6 +34,7 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "capybara"
   gem "rspec-rails", "~> 5.0.0"
+  gem 'cypress-on-rails', '~> 1.0'
 end
 
 gem "rubocop-rails", require: false
