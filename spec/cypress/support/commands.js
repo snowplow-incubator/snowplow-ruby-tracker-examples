@@ -25,14 +25,57 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 const BADEND = "http://localhost:9090/micro/bad";
+const GOODEND = "http://localhost:9090/micro/good";
+const RESETEND = "http://localhost:9090/micro/reset";
 
 Cypress.Commands.add("badEvents", () => {
   cy.request(BADEND).then((response) => {
-    assert(true, "Checking for bad events");
-    if (response.body.length === 0) {
-      return null;
-    } else {
-      return response.body.length;
-    }
+    // assert(true, "Checking for bad events");
+    return response.body;
   });
 });
+
+Cypress.Commands.add("goodEvents", () => {
+  cy.request(GOODEND).then((response) => {
+    // assert(true, "Checking for good events");
+    return response.body;
+  });
+});
+
+Cypress.Commands.add("resetMicro", () => {
+  cy.request(RESETEND);
+  assert(true, "Cleared all events");
+});
+
+Cypress.Commands.add("count", { prevSubject: "true" }, (subject, num) => {
+  expect(subject.length).to.equal(num);
+});
+
+Cypress.Commands.add(
+  "hasEventType",
+  { prevSubject: "true" },
+  (events, type, language) => {
+    console.log(`here in hasEventType: ${type} and ${language}`);
+
+    return events.filter((event) => {
+      const trackerLanguage = event.event.v_tracker.slice(0, 2);
+      return event.eventType === type && trackerLanguage === language;
+    });
+  }
+);
+
+Cypress.Commands.add(
+  "eventDetails",
+  { prevSubject: "true" },
+  (events, key, value) => {
+    console.log(`here in eventDetails: ${key} and ${value}`);
+
+    const filtered = events.filter((event) => {
+      console.log(key);
+      console.log(event.event[key]);
+      return event.event[key] === value;
+    });
+    // assert(true, `Count events with event field '${key}' and value '${value}'`);
+    expect(filtered.length).not.to.equal(0);
+  }
+);
