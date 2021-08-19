@@ -4,7 +4,7 @@ describe("Page ping", () => {
 
     // Page pings are currently configured to fire every 10s
     // Configured here: app/views/shared/_js_tracker.html.erb
-    // Visit a page, produce activity within 10s
+    // These steps are designed to produce activity over 10s
     cy.visit("/shop/all_products");
     cy.wait(3000);
     cy.scrollTo(0, 200);

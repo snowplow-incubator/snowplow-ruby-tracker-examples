@@ -30,38 +30,47 @@ const RESETEND = "http://localhost:9090/micro/reset";
 
 Cypress.Commands.add("badEvents", () => {
   cy.request(BADEND).then((response) => {
-    // assert(true, "Checking for bad events");
     return response.body;
   });
 });
 
 Cypress.Commands.add("goodEvents", () => {
   cy.request(GOODEND).then((response) => {
-    // assert(true, "Checking for good events");
     return response.body;
   });
 });
 
 Cypress.Commands.add("resetMicro", () => {
-  cy.request(RESETEND);
-  // actually check that this worked!
-  assert(true, "Cleared all events");
+  cy.request(RESETEND).then((response) => {
+    if (response.body.total === 0) {
+      assert(true, `Cleared all events from Micro`);
+    }
+  });
 });
 
 Cypress.Commands.add("count", { prevSubject: "true" }, (subject, num) => {
-  expect(subject.length).to.equal(num);
+  if (subject.length === num) {
+    assert(true, `count: there are ${num} event(s), as expected`);
+  } else {
+    assert(false, `count: expected ${num} event(s), found ${subject.length}`);
+  }
 });
 
 Cypress.Commands.add(
   "hasEventType",
   { prevSubject: "true" },
   (events, type, language) => {
-    console.log(`here in hasEventType: ${type} and ${language}`);
-
-    return events.filter((event) => {
+    const filtered = events.filter((event) => {
       const trackerLanguage = event.event.v_tracker.slice(0, 2);
       return event.eventType === type && trackerLanguage === language;
     });
+
+    if (filtered.length > 0) {
+      assert(true, `hasEventType: ${language} ${type} event(s) are present`);
+    } else {
+      assert(false, `hasEventType: no ${language} ${type} events`);
+    }
+    return filtered;
   }
 );
 
@@ -69,14 +78,100 @@ Cypress.Commands.add(
   "eventDetails",
   { prevSubject: "true" },
   (events, key, value) => {
-    console.log(`here in eventDetails: ${key} and ${value}`);
-
     const filtered = events.filter((event) => {
-      console.log(key);
-      console.log(event.event[key]);
       return event.event[key] === value;
     });
-    // assert(true, `Count events with event field '${key}' and value '${value}'`);
-    expect(filtered.length).not.to.equal(0);
+
+    if (filtered.length > 0) {
+      assert(
+        true,
+        `eventDetails: event(s) have parameter "${key}"  with expected value`
+      );
+    } else {
+      assert(false, "eventDetails: no events with specified key and/or value");
+    }
+  }
+);
+
+Cypress.Commands.add(
+  "eventSchema",
+  { prevSubject: "true" },
+  (events, schema) => {
+    const filtered = events.filter((event) => {
+      return event.schema === schema;
+    });
+
+    if (filtered.length > 0) {
+      assert(true, `eventSchema: event(s) have the expected schema`);
+    } else {
+      assert(false, `eventSchema: no events with expected schema`);
+    }
+    return filtered;
+  }
+);
+
+Cypress.Commands.add(
+  "selfDescribingEventData",
+  { prevSubject: "true" },
+  (events, key, value) => {
+    const filtered = events.filter((event) => {
+      return event.event.unstruct_event.data.data[key] === value;
+    });
+    if (filtered.length > 0) {
+      assert(
+        true,
+        `selfDescribingEventData: event(s) have custom parameter "${key}" with expected value`
+      );
+    } else {
+      assert(
+        false,
+        `selfDescribingEventData: no events with expected parameter and/or value`
+      );
+    }
+  }
+);
+
+Cypress.Commands.add(
+  "selfDescribingContextData",
+  { prevSubject: "true" },
+  (events, schema, key, value) => {
+    // Assumes only one event is being assessed
+    const contexts = events[0].event.contexts.data;
+    const filtered = contexts.filter((context) => {
+      return context.schema === schema && context.data[key] === value;
+    });
+    if (filtered.length > 0) {
+      assert(
+        true,
+        `selfDescribingContextData: event has context/entity with correct schema, custom parameter "${key}", and expected value`
+      );
+    } else {
+      assert(
+        false,
+        `selfDescribingContextData: event does not have expected context/entity parameters`
+      );
+    }
+  }
+);
+
+Cypress.Commands.add(
+  "contextSchema",
+  { prevSubject: "true" },
+  (events, schema) => {
+    const filtered = events.filter((event) => {
+      return event.contexts.includes(schema);
+    });
+    if (filtered.length > 0) {
+      assert(
+        true,
+        `contextSchema: event(s) have expected context/entity schema`
+      );
+    } else {
+      assert(
+        false,
+        `contextSchema: no events with expected context/entity schema`
+      );
+    }
+    return filtered;
   }
 );

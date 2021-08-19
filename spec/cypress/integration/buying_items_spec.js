@@ -1,7 +1,7 @@
 describe("Buying from the shop", () => {
   it("View item page, add to basket and purchase", () => {
     cy.visit("/");
-    cy.contains("Shop").click();
+    cy.get("[data-cy=shop-navbar]").click();
     cy.contains("Green skis").click();
 
     cy.get("#purchase-submit").should("be.disabled");
