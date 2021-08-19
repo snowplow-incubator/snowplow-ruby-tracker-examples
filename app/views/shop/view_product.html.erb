@@ -1,8 +1,8 @@
-<% content_for(:page_title) { "Rails Example: Shop - #{@product["title"]}" }%>
+<% content_for(:page_title) { "Rails Example: Shop - #{@product["title"]}" } %>
 
 <section>
   <%= render "shared/shopping_basket" %>
-  <hr/>
+  <hr>
   <div class="single-product">
     <h3><%= @product["title"] %></h3>
     <p><%= @product["description"][1..-2] %></p>

@@ -2,26 +2,29 @@
     "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
     "description": "Schema for a purchase event",
     "self": {
-        "vendor": "test.example",
+        "vendor": "test.example.iglu",
         "name": "purchase_event",
         "format": "jsonschema",
         "version": "1-0-0"
     },
     "type": "object",
     "properties": {
-        "orderId": {
+        "order_id": {
+            "description": "Order ID",
             "type": "string",
             "maxLength": 64
         },
-        "total": {
+        "total_value": {
+            "description": "Sum of product prices in the order",
             "type": "number",
             "minimum": 0,
-            "maximum": 100000,
+            "maximum": 100000
         },
         "price_reduced": {
-            "type": "boolean"
+            "description": "Does this order include items that have been reduced?",
+            "type": ["boolean", "null"]
         }
     },
-    "required": ["orderId", "total"],
+    "required": ["order_id", "total_value"],
     "additionalProperties": false
 }
