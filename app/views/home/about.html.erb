@@ -2,7 +2,22 @@
 
 <section id="about">
   <h2>About</h2>
-  <p>This demo site shows how to incorporate tracking into a Rails app.</p>
-  <p>The JavaScript (client-side) tracker/SDK emits Page View and Page Ping events. It can also generate other kinds of events not shown here.</p>
-  <p>The Ruby (server-side) tracker/SDK emits events on clicking the buttons on the index page.</p>
+  <p>Welcome to this demo app from <%= link_to "Snowplow Analytics", "https://snowplowanalytics.com/" %>.</p>
+  <p>This site demonstrates how to incorporate the
+    <%= link_to "Ruby", "https://github.com/snowplow/snowplow-ruby-tracker" %>
+    and <%= link_to "Javascript", "https://github.com/snowplow/snowplow-javascript-tracker" %>
+    Snowplow tracker SDKs into one app. This combination of both server-side and client-side tracking
+    generates high-quality, personalised behavioural data. We use the testing pipeline
+    <%= link_to "Snowplow Micro", "https://github.com/snowplow-incubator/snowplow-micro" %>
+    to confirm everything is working correctly.
+  </p>
+  <p>This example is a very basic ecommerce/retail app. The events tracked are:<br/>
+  <ul>
+    <li>Ruby tracker: page views, custom purchase events, and eCommerce events.</li>
+    <li>JavaScript tracker: page views, page pings (activity), and custom add-to-basket events.</li>
+    </ul>
+    </p>
+  <p>Read more about how to design your tracking strategy and implement trackers in our
+  <%= link_to "Snowplow docs", "https://docs.snowplowanalytics.com/" %>, and in the
+  <%= link_to "README", "https://github.com/snowplow-incubator/snowplow-ruby-tracker-examples" %> for this app. </p>
 </section>

@@ -1,7 +1,3 @@
 <%= form_with(local: false, method: :get, id:"basket-add-form") do |form| %>
-  <%= form.hidden_field :name, value: product["title"] %>
-  <%= form.hidden_field :sku, value: product["sku"] %>
-  <%= form.hidden_field :on_sale, value: product["sale"] %>
-  <%= form.hidden_field :original_price, value: product["original_price"] %>
-  <%= form.submit "Add to basket", class: "basket-add", data: { price: product["price"] } %>
+  <%= form.submit "Add to basket", class: "basket-add", data: { product: product.to_json } %>
 <% end %>

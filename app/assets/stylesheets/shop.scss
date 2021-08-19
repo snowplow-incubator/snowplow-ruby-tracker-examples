@@ -3,14 +3,14 @@
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
 #shop img {
-  width: 50%;
+  width: 70%;
   max-width: 600px;
   float: right;
   margin-left: 2rem;
 }
 
 .products {
-  width: 200px;
+  width: 400px;
 }
 
 h4 {
@@ -22,9 +22,13 @@ h4 {
 }
 
 .basket {
-  width: 200px;
+  width: 400px;
 }
 
 .single-product form {
-  width: 200px;
+  width: 400px;
+}
+
+p.basket-item {
+  margin-bottom: 0;
 }

@@ -54,6 +54,7 @@ Cypress.Commands.add("count", { prevSubject: "true" }, (subject, num) => {
   } else {
     assert(false, `count: expected ${num} event(s), found ${subject.length}`);
   }
+  return subject;
 });
 
 Cypress.Commands.add(
@@ -70,6 +71,7 @@ Cypress.Commands.add(
     } else {
       assert(false, `hasEventType: no ${language} ${type} events`);
     }
+    console.log(filtered);
     return filtered;
   }
 );
@@ -85,11 +87,23 @@ Cypress.Commands.add(
     if (filtered.length > 0) {
       assert(
         true,
-        `eventDetails: event(s) have parameter "${key}"  with expected value`
+        `eventDetails: event(s) have parameter "${key}" with expected value`
       );
     } else {
-      assert(false, "eventDetails: no events with specified key and/or value");
+      const paramCheck = events.filter((event) => {
+        return event.event[key] !== undefined;
+      });
+      if (paramCheck.length === 0) {
+        assert(false, `eventDetails: no events with parameter "${key}" found`);
+      } else {
+        assert(
+          false,
+          `eventDetails: no events found with "${key}": "${value}"`
+        );
+      }
     }
+    console.log(filtered);
+    return filtered;
   }
 );
 
@@ -128,17 +142,23 @@ Cypress.Commands.add(
         `selfDescribingEventData: no events with expected parameter and/or value`
       );
     }
+    return filtered;
   }
 );
 
 Cypress.Commands.add(
   "selfDescribingContextData",
   { prevSubject: "true" },
-  (events, schema, key, value) => {
-    // Assumes only one event is being assessed
-    const contexts = events[0].event.contexts.data;
+  (event, key, value) => {
+    console.log(`the events list is ${event.length} long`);
+    console.log(event);
+    if (event.length > 1) {
+      assert(false, "selfDescribingContextData can only test 1 event");
+    }
+    // Assumes only one event is being assessed??!??!?!??!
+    const contexts = event[0].event.contexts.data;
     const filtered = contexts.filter((context) => {
-      return context.schema === schema && context.data[key] === value;
+      return context.data[key] === value;
     });
     if (filtered.length > 0) {
       assert(
@@ -151,6 +171,7 @@ Cypress.Commands.add(
         `selfDescribingContextData: event does not have expected context/entity parameters`
       );
     }
+    return event;
   }
 );
 

@@ -6,12 +6,14 @@ describe("Buying from the shop", () => {
 
     cy.get("#purchase-submit").should("be.disabled");
 
-    cy.get("#basket-add-form").click();
+    cy.get("#basket-add-form").pause().click();
     cy.get("#order-total").should("have.text", "449.99");
 
     cy.go("back");
     cy.get(".white_poles > #basket-add-form").click();
     cy.get("#order-total").should("have.text", "509.79");
+
+    cy.wait(1000);
 
     cy.get("#purchase-submit").click();
     cy.url().should("include", "/home/confirmation");
