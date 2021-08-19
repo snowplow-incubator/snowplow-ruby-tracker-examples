@@ -44,6 +44,7 @@ Cypress.Commands.add("goodEvents", () => {
 
 Cypress.Commands.add("resetMicro", () => {
   cy.request(RESETEND);
+  // actually check that this worked!
   assert(true, "Cleared all events");
 });
 
