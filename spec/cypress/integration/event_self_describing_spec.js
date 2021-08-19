@@ -7,7 +7,7 @@ describe("Self-describing event", () => {
     cy.visit("shop/brown_skis");
     cy.get("#basket-add-form").click();
 
-    cy.wait(1500);
+    cy.wait(2000);
 
     cy.goodEvents()
       // Self-describing events are called "unstruct" in the event data
@@ -29,5 +29,29 @@ describe("Self-describing event", () => {
         "sku",
         "SKI-BR555-M"
       );
+  });
+
+  // delete this test once have purchase event working!
+  it("is emitted by Ruby tracker when clicking button on index page", () => {
+    cy.visit("/");
+    cy.get(".div3 > a").click();
+
+    cy.wait(2000);
+
+    cy.goodEvents()
+      .hasEventType("unstruct", "rb")
+      .eventSchema("iglu:test.example.iglu/skiing_turn/jsonschema/1-0-0")
+      .selfDescribingEventData("turnType", "snowplough");
+  });
+
+  it("is emitted by Ruby tracker for purchase activity", () => {
+    cy.visit("/shop/all_products");
+    cy.get(".blue_skis > #basket-add-form").click();
+
+    cy.wait(1500);
+
+    cy.goodEvents()
+      .hasEventType("unstruct", "rb")
+      .eventSchema("iglu:test.example.iglu/purchase_event/jsonschema/1-0-0");
   });
 });

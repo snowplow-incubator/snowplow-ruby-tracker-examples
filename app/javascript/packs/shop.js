@@ -1,4 +1,7 @@
-console.log("in Shop.js");
+let basketTotal = 0;
+let basketCount = 0;
+let basketContentsHTML = "";
+let basketEntities = [];
 
 document.addEventListener("turbolinks:load", function () {
   updateTotal(0);
@@ -9,21 +12,15 @@ document.addEventListener("turbolinks:load", function () {
 
   addToBasketButtons.forEach((element) => {
     element.addEventListener("click", () => {
-      console.log("click!");
-
-      const price = parseFloat(
-        element.attributes.getNamedItem("data-price").nodeValue
+      const product = JSON.parse(
+        element.attributes.getNamedItem("data-product").value
       );
-      const name = element.form.elements.name.value;
-      const sku = element.form.elements.sku.value;
-      const onSale = element.form.elements.on_sale.value;
-      const originalPrice = element.form.elements.original_price.value;
 
-      updateTotal(price);
+      updateTotal(product.price);
       updateCount(1);
-      updateContents(name);
-      basketEntities.push(productEntityData(name, sku, onSale, originalPrice));
-      console.log(basketEntities);
+      updateContents(product.title);
+
+      basketEntities.push(productEntityData(product));
 
       // Tracking a product being added to the basket
       window.snowplow("trackSelfDescribingEvent", {
@@ -37,14 +34,7 @@ document.addEventListener("turbolinks:load", function () {
         context: [
           {
             schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-0",
-            data: {
-              sku: sku,
-              name: name,
-              price: parseFloat(price),
-              onSale: onSale === "true",
-              startPrice: parseFloat(originalPrice),
-              quantity: 1,
-            },
+            data: productEntityData(product),
           },
         ],
       });
@@ -52,17 +42,24 @@ document.addEventListener("turbolinks:load", function () {
   });
 
   const purchaseForm = document.getElementById("purchase-form");
-  purchaseForm.addEventListener("click", () => {
+  purchaseForm.addEventListener("click", (event) => {
+    event.preventDefault();
     console.log("clicked on purchase form");
     const purchaseDetails = document.getElementById("details");
     purchaseDetails.setAttribute("value", basketEntities);
+
+    const csrfToken = document.querySelector("[name='csrf-token']").content;
+
+    fetch("/purchase", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken,
+      },
+      body: JSON.stringify(basketEntities),
+    });
   });
 });
-
-let basketTotal = 0;
-let basketCount = 0;
-let basketContentsHTML = "";
-let basketEntities = [];
 
 function updateTotal(price) {
   basketTotal += price;
@@ -88,13 +85,13 @@ function updateContents(name) {
   items.innerHTML = basketContentsHTML;
 }
 
-function productEntityData(sku, name, price, onSale, originalPrice) {
+function productEntityData(product) {
   return {
-    sku: sku,
-    name: name,
-    price: parseFloat(price),
-    onSale: onSale === "true",
-    startPrice: parseFloat(originalPrice),
+    sku: product.sku,
+    name: product.title,
+    price: product.price,
+    onSale: product.sale,
+    startPrice: product.original_price,
     quantity: 1,
   };
 }

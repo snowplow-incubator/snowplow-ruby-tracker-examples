@@ -12,6 +12,7 @@ class ShopController < ApplicationController
   # POST
   def purchase
     p "in purchase 💸"
+    p params["shop"]["_json"]
     order_id = "ABC-123"
 
     # tracking goes here
