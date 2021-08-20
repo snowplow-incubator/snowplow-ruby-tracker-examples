@@ -16,7 +16,6 @@ document.addEventListener("turbolinks:load", function () {
       const product = JSON.parse(
         element.attributes.getNamedItem("data-product").value
       );
-      console.log(product);
 
       updateTotal(product.price);
       updateCount(1);

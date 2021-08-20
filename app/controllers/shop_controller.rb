@@ -77,14 +77,10 @@ class ShopController < ApplicationController
   end
 
   def display_price(product)
-    price = add_trailing_zero(product["price"].to_s)
-    original_price = add_trailing_zero(product["original_price"].to_s)
+    price = "%.2f" % product["price"].to_s
+    original_price = "%.2f" % product["original_price"].to_s
 
     sale_string = "<strike>£#{original_price}</strike> £#{price}"
     price == original_price ? "£#{price}" : sale_string
-  end
-
-  def add_trailing_zero(price)
-    price.split(".")[1].length == 1 ? (price << "0") : price
   end
 end
