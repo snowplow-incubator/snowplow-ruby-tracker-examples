@@ -10,7 +10,7 @@
     "type": "object",
     "properties": {
         "order_id": {
-            "description": "Unique order ID",
+            "description": "Order ID",
             "type": "string",
             "maxLength": 64
         },

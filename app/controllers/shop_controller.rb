@@ -13,21 +13,23 @@ class ShopController < ApplicationController
   def purchase
     ActionController::Parameters.permit_all_parameters = true
     order_details = params["shop"]
-    order_id = "ABC-123"
+    transaction = {
+                    "order_id" => "ABC-123",
+                    "total_value" => order_details["total"]
+                  }
 
-    # For this demo app, we demonstrate how to track a purchase by both the
+    # For this demo app, we are demonstrating how to track a purchase by both the
     # custom self-describing JSON and out-of-the box eCommerce event types.
-    custom_purchase_event(order_id, order_details)
-    ecommerce_purchase_event(order_id, order_details)
-
-    # redirect_to home_confirmation_path
+    custom_purchase_event(transaction, order_details)
+    ecommerce_purchase_event(transaction, order_details)
   end
 
   private #------------------------------------------
 
-  def custom_purchase_event(order_id, order_details)
+  def custom_purchase_event(transaction, order_details)
     # The self-describing event type allows the grestest flexibility.
     # One event is sent per purchase, with product entities attached as context.
+
     # This Snowplow shop is interested in understanding the effects of sales/price reductions on revenue.
     # Therefore information about this is included for each product,
     # to enable easy modelling of the data.
@@ -35,27 +37,22 @@ class ShopController < ApplicationController
     entity_schema = "iglu:test.example.iglu/product_entity/jsonschema/1-0-0"
 
     purchase_json = SnowplowTracker::SelfDescribingJson.new(
-      event_schema, { "orderId" => order_id, "total" => order_details["total"] }
+      event_schema, transaction
     )
-
     context = order_details["products"].map do |product|
       SnowplowTracker::SelfDescribingJson.new(entity_schema, product.to_h)
     end
-
     Snowplow.instance.tracker.track_self_describing_event(purchase_json, context)
   end
 
-  def ecommerce_purchase_event(order_id, order_details)
-    # Ruby tracker's built-in eCommerce event
-    # is more complex than the Self-Describing event, especially for customisation.
+  def ecommerce_purchase_event(transaction, order_details)
+    # The Ruby tracker's built-in eCommerce event
+    # is more limited and more complex than the Self-Describing event.
     # A "transaction" event is sent, plus individual "transaction_item" events
     # for each unique product in the order.
+
     # To include information about e.g. price reductions, a custom context/entity
     # could be sent with each item.
-    transaction = {
-                    "order_id" => order_id,
-                    "total_value" => order_details["total"]
-                  }
     items = order_details["products"].map do |product|
       {
         "sku" => product["sku"],
@@ -69,7 +66,7 @@ class ShopController < ApplicationController
 
   # We chose not to use a database/CRUD layer for this demo app
   # to reduce complexity and the number of dependencies.
-  # Product details are stored in a single file instead
+  # Product details are stored in a single file instead.
   def product_details
     import.each_value { |info| info["display_price"] = display_price(info) }
   end

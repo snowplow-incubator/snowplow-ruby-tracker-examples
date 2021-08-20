@@ -1,41 +1,12 @@
 <% content_for(:page_title) { "Rails Example: Home" } %>
 
 <section id="home">
+  <h2>Tracking events with Snowplow</h2>
 
-  <div class="parent grid">
-    <div class="div1"><%= image_tag("skiing.jpg", class: "main-image") %></div>
-    <div class="div2"><p>Emit Ruby tracker events!</p></div>
-    <div class="div3">
-      <%= link_to "Self Describing/Custom",
-        track_self_describing_path, method: :post,
-        role: "button", remote: true, data: { cy: "fake-unstruct" }
-      %>
-    </div>
-    <div class="div4">
-      <%= link_to "Page View",
-        track_page_view_path, method: :post,
-        role: "button", remote: true
-      %>
-    </div>
-    <div class="div5">
-      <%= link_to "Screen View",
-        track_screen_view_path(name: "Home#index", id: "screen001"), method: :post,
-        role: "button", remote: true
-      %>
-    </div>
-    <div class="div6">
-      <%= link_to "eCommerce",
-        track_ecommerce_path, method: :post,
-        role: "button", remote: true
-      %>
-    </div>
-    <div class="div7">
-      <%= link_to "Struct",
-        track_struct_path, method: :post,
-        role: "button", remote: true
-      %>
-    </div>
-    <div class="div8"> </div>
+  <div class="main-image"><%= image_tag("skiing.jpg") %></div>
+  <div class="text">
+    <p>Navigate around this demo site to generate events.</p>
+    <p>Use the Cypress tests to confirm that the events were generated and collected correctly.</p>
   </div>
 
 </section>

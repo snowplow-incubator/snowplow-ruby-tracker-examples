@@ -16,6 +16,7 @@ document.addEventListener("turbolinks:load", function () {
       const product = JSON.parse(
         element.attributes.getNamedItem("data-product").value
       );
+      console.log(product);
 
       updateTotal(product.price);
       updateCount(1);
@@ -23,7 +24,7 @@ document.addEventListener("turbolinks:load", function () {
 
       basketEntities.push(productEntityData(product));
 
-      // Tracking a product being added to the basket
+      // Tracking a product being added to the basket.
       window.snowplow("trackSelfDescribingEvent", {
         event: {
           schema: "iglu:test.example.iglu/basket_action_event/jsonschema/1-0-0",
@@ -31,7 +32,7 @@ document.addEventListener("turbolinks:load", function () {
             action: "add",
           },
         },
-        // The specific product is included as an Entity in the Event context
+        // The specific product is included as an Entity in the Event context.
         context: [
           {
             schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-0",
@@ -51,9 +52,10 @@ document.addEventListener("turbolinks:load", function () {
       document.getElementById("order-total").textContent
     );
     const purchaseDetails = { total: orderTotal, products: basketEntities };
-
     const csrfToken = document.querySelector("[name='csrf-token']").content;
 
+    // The purchase could be tracked here using the JS tracker
+    // but it's more appropriate to track purchases server-side.
     fetch("/purchase", {
       method: "POST",
       headers: {
@@ -61,6 +63,8 @@ document.addEventListener("turbolinks:load", function () {
         "X-CSRF-Token": csrfToken,
       },
       body: JSON.stringify(purchaseDetails),
+    }).then(() => {
+      window.location.assign("/home/confirmation");
     });
   });
 });
@@ -68,7 +72,7 @@ document.addEventListener("turbolinks:load", function () {
 function updateTotal(price) {
   basketTotal += price;
   const total = document.getElementById("order-total");
-  total.innerHTML = basketTotal;
+  total.innerHTML = basketTotal.toFixed(2);
 }
 
 function updateCount(num) {
