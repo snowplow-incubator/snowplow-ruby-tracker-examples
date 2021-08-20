@@ -45,8 +45,11 @@ document.addEventListener("turbolinks:load", function () {
   purchaseForm.addEventListener("click", (event) => {
     event.preventDefault();
     console.log("clicked on purchase form");
-    const purchaseDetails = document.getElementById("details");
-    purchaseDetails.setAttribute("value", basketEntities);
+
+    const orderTotal = parseFloat(
+      document.getElementById("order-total").textContent
+    );
+    const purchaseDetails = { total: orderTotal, products: basketEntities };
 
     const csrfToken = document.querySelector("[name='csrf-token']").content;
 
@@ -56,7 +59,7 @@ document.addEventListener("turbolinks:load", function () {
         "Content-Type": "application/json",
         "X-CSRF-Token": csrfToken,
       },
-      body: JSON.stringify(basketEntities),
+      body: JSON.stringify(purchaseDetails),
     });
   });
 });

@@ -7,7 +7,6 @@
 
     <%= form_with url: purchase_path, id:"purchase-form",
       method: :post, remote:true, local: false do |form| %>
-      <%= form.hidden_field :details, value: '{"json": { "test": "hello"}}'%>
       <%= form.submit "Purchase", id: "purchase-submit", disabled: true %>
     <% end %>
   </p>
