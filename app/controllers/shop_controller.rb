@@ -20,7 +20,7 @@ class ShopController < ApplicationController
     custom_purchase_event(order_id, order_details)
     ecommerce_purchase_event(order_id, order_details)
 
-    redirect_to home_confirmation_path
+    # redirect_to home_confirmation_path
   end
 
   private #------------------------------------------
@@ -34,17 +34,13 @@ class ShopController < ApplicationController
     event_schema = "iglu:test.example.iglu/purchase_event/jsonschema/1-0-0"
     entity_schema = "iglu:test.example.iglu/product_entity/jsonschema/1-0-0"
 
-    transaction = {
-                    "orderId" => order_id,
-                    "total" => order_details["total"]
-                  }
+    purchase_json = SnowplowTracker::SelfDescribingJson.new(
+      event_schema, { "orderId" => order_id, "total" => order_details["total"] }
+    )
+
     context = order_details["products"].map do |product|
       SnowplowTracker::SelfDescribingJson.new(entity_schema, product.to_h)
     end
-
-
-    purchase_json = SnowplowTracker::SelfDescribingJson.new(
-      event_schema, transaction )
 
     Snowplow.instance.tracker.track_self_describing_event(purchase_json, context)
   end
@@ -62,11 +58,11 @@ class ShopController < ApplicationController
                   }
     items = order_details["products"].map do |product|
       {
-                "sku" => product["sku"],
-                "price" => product["price"],
-                "quantity" => product["quantity"],
-                "name" => product["name"]
-              }
+        "sku" => product["sku"],
+        "price" => product["price"],
+        "quantity" => product["quantity"],
+        "name" => product["name"]
+      }
     end
     Snowplow.instance.tracker.track_ecommerce_transaction(transaction, items)
   end
