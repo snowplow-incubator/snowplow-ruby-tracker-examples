@@ -97,8 +97,8 @@ function productEntityData(product) {
     sku: product.sku,
     name: product.title,
     price: product.price,
-    onSale: product.sale,
-    startPrice: product.original_price,
+    on_sale: product.sale,
+    orig_price: product.original_price,
     quantity: 1,
   };
 }
