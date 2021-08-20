@@ -19,9 +19,8 @@ document.addEventListener("turbolinks:load", function () {
 
       updateTotal(product.price);
       updateCount(1);
-      updateContents(product.title);
-
-      basketEntities.push(productEntityData(product));
+      updateBasketEntities(product);
+      updateContents();
 
       // Tracking a product being added to the basket.
       window.snowplow("trackSelfDescribingEvent", {
@@ -85,11 +84,23 @@ function updateCount(num) {
   }
 }
 
-function updateContents(name) {
-  if (name !== undefined) basketContentsHTML += `<li>${name}</li>`;
+function updateBasketEntities(product) {
+  const alreadyInBasket = basketEntities.find(
+    (entity) => entity.sku === product.sku
+  );
+  if (alreadyInBasket === undefined) {
+    basketEntities.push(productEntityData(product));
+  } else {
+    alreadyInBasket.quantity += 1;
+  }
+}
 
+function updateContents() {
+  const newContents = basketEntities.map((product) => {
+    return `<p class="basket-item">${product.quantity}x ${product.name}</p>`;
+  });
   const items = document.getElementById("basket-items");
-  items.innerHTML = basketContentsHTML;
+  items.innerHTML = newContents.join("");
 }
 
 function productEntityData(product) {
