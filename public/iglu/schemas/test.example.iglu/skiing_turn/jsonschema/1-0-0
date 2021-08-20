@@ -2,7 +2,7 @@
     "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
     "description": "Example schema for Rails project",
     "self": {
-        "vendor": "test.example",
+        "vendor": "test.example.iglu",
         "name": "skiing_turn",
         "format": "jsonschema",
         "version": "1-0-0"
@@ -11,11 +11,13 @@
     "type": "object",
     "properties": {
         "turnType": {
+            "description": "Name of skiing turn",
             "type": "string",
             "maxLength": 255
         },
         "difficulty": {
-          "type": "integer",
+          "description": "How difficult is the turn to perform",
+          "type": ["integer", "null"],
           "minimum": 1,
           "maximum": 10
         }

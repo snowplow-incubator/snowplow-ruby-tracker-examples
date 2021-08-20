@@ -2,7 +2,7 @@
     "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
     "description": "Schema for a product entity",
     "self": {
-        "vendor": "test.example",
+        "vendor": "test.example.iglu",
         "name": "product_entity",
         "format": "jsonschema",
         "version": "1-0-0"
@@ -10,27 +10,33 @@
     "type": "object",
     "properties": {
         "sku": {
+            "description": "Product SKU",
             "type": "string",
             "maxLength": 64
         },
         "name": {
-            "type": ["string", "null"],
+            "description": "Product name",
+            "type": ["string"],
             "maxLength": 255
         },
         "price": {
+            "description": "Price of product at point of sale",
             "type": "number",
             "minimum": 1,
             "maximum": 10000
         },
         "onSale": {
-            "type": "boolean"
+            "description": "Has the price been reduced since it was first offered?",
+            "type": ["boolean", "null"]
         },
         "startPrice": {
-            "type": "number",
+            "description": "Original selling price",
+            "type": ["number", "null"],
             "minimum": 1,
             "maximum": 10000
         },
         "quantity": {
+            "description": "Quantity of this product",
             "type": "integer",
             "minimum": 1,
             "maximum": 10000

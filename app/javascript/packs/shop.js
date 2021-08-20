@@ -11,7 +11,8 @@ document.addEventListener("turbolinks:load", function () {
   const addToBasketButtons = document.querySelectorAll(".basket-add");
 
   addToBasketButtons.forEach((element) => {
-    element.addEventListener("click", () => {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
       const product = JSON.parse(
         element.attributes.getNamedItem("data-product").value
       );
