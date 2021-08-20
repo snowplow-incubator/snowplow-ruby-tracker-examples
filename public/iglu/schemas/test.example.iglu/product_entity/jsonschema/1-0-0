@@ -42,6 +42,6 @@
             "maximum": 10000
         }
     },
-    "required": ["sku", "name", "price", "quantity"],
+    "required": ["sku", "name", "price", "quantity", "on_sale", "orig_price"],
     "additionalProperties": false
 }

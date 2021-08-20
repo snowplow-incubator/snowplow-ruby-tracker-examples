@@ -31,22 +31,13 @@ describe("Self-describing event", () => {
       );
   });
 
-  // delete this test once have purchase event working!
-  it("is emitted by Ruby tracker when clicking button on index page", () => {
-    cy.visit("/");
-    cy.get(".div3 > a").click();
-
-    cy.wait(2000);
-
-    cy.goodEvents()
-      .hasEventType("unstruct", "rb")
-      .eventSchema("iglu:test.example.iglu/skiing_turn/jsonschema/1-0-0")
-      .selfDescribingEventData("turnType", "snowplough");
-  });
-
   it("is emitted by Ruby tracker for purchase activity", () => {
     cy.visit("/shop/all_products");
     cy.get(".blue_skis > #basket-add-form").click();
+
+    cy.wait(1000);
+
+    cy.get("#purchase-submit").click();
 
     cy.wait(1500);
 
