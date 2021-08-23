@@ -53,7 +53,7 @@ document.addEventListener("turbolinks:load", function () {
     const csrfToken = document.querySelector("[name='csrf-token']").content;
 
     // The purchase could be tracked here using the JS tracker
-    // but it's more appropriate to track purchases server-side.
+    // but it's generally more accurate to track purchases server-side.
     fetch("/purchase", {
       method: "POST",
       headers: {

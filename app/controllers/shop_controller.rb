@@ -18,7 +18,7 @@ class ShopController < ApplicationController
                     "total_value" => order_details["total"]
                   }
 
-    # For this demo app, we are demonstrating how to track a purchase by both the
+    # For this demo app, we show how to track a purchase by both the
     # custom self-describing JSON and out-of-the box eCommerce event types.
     custom_purchase_event(transaction, order_details)
     ecommerce_purchase_event(transaction, order_details)

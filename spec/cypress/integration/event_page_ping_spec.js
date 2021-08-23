@@ -16,6 +16,6 @@ describe("Page ping", () => {
 
     cy.goodEvents()
       .hasEventType("page_ping", "js")
-      .eventDetails("page_urlpath", "/shop/all_products");
+      .eventDetails({ page_urlpath: "/shop/all_products" });
   });
 });

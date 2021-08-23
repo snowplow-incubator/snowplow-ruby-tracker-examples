@@ -15,10 +15,10 @@ describe("Page views", () => {
 
     cy.goodEvents()
       .hasEventType("page_view", "rb")
-      .eventDetails("page_url", "http://localhost:5017/");
+      .eventDetails({ page_url: "http://localhost:5017/" });
     cy.goodEvents()
       .hasEventType("page_view", "js")
-      .eventDetails("page_title", "Rails Example: Home");
+      .eventDetails({ page_title: "Rails Example: Home" });
   });
 
   it("have correct referrer", () => {
@@ -26,9 +26,8 @@ describe("Page views", () => {
     cy.get("[data-cy=shop-navbar]").click();
 
     cy.wait(1500);
-    cy.goodEvents().eventDetails(
-      "page_referrer",
-      "http://localhost:5017/home/about"
-    );
+    cy.goodEvents().eventDetails({
+      page_referrer: "http://localhost:5017/home/about",
+    });
   });
 });
