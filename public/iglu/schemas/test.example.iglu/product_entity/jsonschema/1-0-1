@@ -5,7 +5,7 @@
         "vendor": "test.example.iglu",
         "name": "product_entity",
         "format": "jsonschema",
-        "version": "1-0-0"
+        "version": "1-0-1"
     },
     "type": "object",
     "properties": {
@@ -25,6 +25,16 @@
             "minimum": 1,
             "maximum": 10000
         },
+        "on_sale": {
+            "description": "Has the price been reduced since it was first offered?",
+            "type": ["boolean", "null"]
+        },
+        "orig_price": {
+            "description": "Original selling price",
+            "type": ["number", "null"],
+            "minimum": 1,
+            "maximum": 10000
+        },
         "quantity": {
             "description": "Quantity of this product",
             "type": "integer",
@@ -32,6 +42,6 @@
             "maximum": 10000
         }
     },
-    "required": ["sku", "name", "price", "quantity"],
+    "required": ["sku", "name", "price", "quantity", "on_sale", "orig_price"],
     "additionalProperties": false
 }

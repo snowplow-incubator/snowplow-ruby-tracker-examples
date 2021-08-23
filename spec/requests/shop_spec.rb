@@ -7,11 +7,4 @@ RSpec.describe "Shops", type: :request do
       expect(response).to have_http_status(:success)
     end
   end
-
-  describe "GET /blue_skis" do
-    it "returns http success" do
-      get "/shop/blue_skis"
-      expect(response).to have_http_status(:success)
-    end
-  end
 end
