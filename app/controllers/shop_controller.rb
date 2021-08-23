@@ -30,8 +30,8 @@ class ShopController < ApplicationController
     # The self-describing event type allows the grestest flexibility.
     # One event is sent per purchase, with product entities attached as context.
 
-    # This Snowplow shop has become interested in understanding the effects of sales/price reductions on revenue.
-    # Therefore information about this is included for each product,
+    # This Snowplow shop has become interested in the effects of sales/price reductions on revenue.
+    # Therefore the product entity schema has been updated to include information about this,
     # to enable easy modelling of the data.
     event_schema = "iglu:test.example.iglu/purchase_event/jsonschema/1-0-0"
     entity_schema = "iglu:test.example.iglu/product_entity/jsonschema/1-0-1"

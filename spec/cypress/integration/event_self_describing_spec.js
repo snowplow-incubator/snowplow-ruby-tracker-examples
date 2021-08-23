@@ -16,7 +16,7 @@ describe("Self-describing event", () => {
       .eventSchema(
         "iglu:test.example.iglu/basket_action_event/jsonschema/1-0-0"
       )
-      .contextSchema("iglu:test.example.iglu/product_entity/jsonschema/1-0-0");
+      .contextSchema("iglu:test.example.iglu/product_entity/jsonschema/1-0-1");
 
     cy.goodEvents()
       .hasEventType("unstruct", "js")
@@ -50,7 +50,7 @@ describe("Self-describing event", () => {
 
     cy.goodEvents()
       .hasEventType("unstruct", "rb")
-      .contextSchema("iglu:test.example.iglu/product_entity/jsonschema/1-0-0")
+      .contextSchema("iglu:test.example.iglu/product_entity/jsonschema/1-0-1")
       .selfDescribingContextData({
         name: "Green skis (size S)",
         quantity: 2,

@@ -131,7 +131,6 @@ Cypress.Commands.add(
         return context.data[key] === parameters[key];
       });
       const matchedUnique = [...new Set(matchedParameters)];
-      console.log(matchedUnique);
       return matchedUnique.length === 1 && matchedUnique[0] === true;
     });
 

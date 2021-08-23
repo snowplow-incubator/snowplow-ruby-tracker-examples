@@ -44,7 +44,6 @@ document.addEventListener("turbolinks:load", function () {
   const purchaseForm = document.getElementById("purchase-form");
   purchaseForm.addEventListener("click", (event) => {
     event.preventDefault();
-    console.log("clicked on purchase form");
 
     const orderTotal = parseFloat(
       document.getElementById("order-total").textContent
