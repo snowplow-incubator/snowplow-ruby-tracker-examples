@@ -33,7 +33,7 @@ document.addEventListener("turbolinks:load", function () {
         // The specific product is included as an Entity in the Event context.
         context: [
           {
-            schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-0",
+            schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-1",
             data: productEntityData(product),
           },
         ],
