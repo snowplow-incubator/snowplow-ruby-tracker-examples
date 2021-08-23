@@ -36,3 +36,5 @@ yarn-debug.log*
 .yarn-integrity
 
 coverage/
+spec/cypress/videos/
+spec/cypress/screenshots/
