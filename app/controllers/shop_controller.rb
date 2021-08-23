@@ -13,6 +13,12 @@ class ShopController < ApplicationController
   def purchase
     ActionController::Parameters.permit_all_parameters = true
     order_details = params["shop"]
+
+    # The Snowplow Ruby tracker accepts strings or symbols as hash keys
+    # for any context/entity schemas, but eCommerce events currently only accept
+    # the old hash rocket notation.
+    # eCommerce events with JSON-style hash notation will fail silently,
+    # they will not be sent as bad events to Micro.
     transaction = {
                     "order_id" => "ABC-123",
                     "total_value" => order_details["total"]

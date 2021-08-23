@@ -21,7 +21,7 @@
             "maximum": 100000
         },
         "price_reduced": {
-            "description": "Does this order include items that have been reduced?",
+            "description": "Does this order include items whose price has been reduced?",
             "type": ["boolean", "null"]
         }
     },
