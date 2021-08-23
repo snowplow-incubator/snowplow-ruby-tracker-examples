@@ -1,31 +1,9 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+// These custom Cypress Commands enable testing of events collected by Snowplow Micro.
+// This is an example only, feel free to approach testing in your own way.
 
-const BADEND = "http://localhost:9090/micro/bad";
+// Snowplow Micro API endpoints
 const GOODEND = "http://localhost:9090/micro/good";
+const BADEND = "http://localhost:9090/micro/bad";
 const RESETEND = "http://localhost:9090/micro/reset";
 
 Cypress.Commands.add("badEvents", () => {
@@ -71,7 +49,6 @@ Cypress.Commands.add(
     } else {
       assert(false, `hasEventType: no ${language} ${type} events`);
     }
-    console.log(filtered);
     return filtered;
   }
 );
@@ -79,30 +56,20 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "eventDetails",
   { prevSubject: "true" },
-  (events, key, value) => {
+  (events, parameters) => {
     const filtered = events.filter((event) => {
-      return event.event[key] === value;
+      const matchedParameters = Object.keys(parameters).map((key) => {
+        return event.event[key] === parameters[key];
+      });
+      const matchedUnique = [...new Set(matchedParameters)];
+      return matchedUnique.length === 1 && matchedUnique[0] === true;
     });
 
     if (filtered.length > 0) {
-      assert(
-        true,
-        `eventDetails: event(s) have parameter "${key}" with expected value`
-      );
+      assert(true, `eventDetails: event(s) present with expected parameters`);
     } else {
-      const paramCheck = events.filter((event) => {
-        return event.event[key] !== undefined;
-      });
-      if (paramCheck.length === 0) {
-        assert(false, `eventDetails: no events with parameter "${key}" found`);
-      } else {
-        assert(
-          false,
-          `eventDetails: no events found with "${key}": "${value}"`
-        );
-      }
+      assert(false, `eventDetails: no events matching all given parameters`);
     }
-    console.log(filtered);
     return filtered;
   }
 );
@@ -127,19 +94,24 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "selfDescribingEventData",
   { prevSubject: "true" },
-  (events, key, value) => {
+  (events, parameters) => {
     const filtered = events.filter((event) => {
-      return event.event.unstruct_event.data.data[key] === value;
+      const matchedParameters = Object.keys(parameters).map((key) => {
+        return event.event.unstruct_event.data.data[key] === parameters[key];
+      });
+      const matchedUnique = [...new Set(matchedParameters)];
+      return matchedUnique.length === 1 && matchedUnique[0] === true;
     });
+
     if (filtered.length > 0) {
       assert(
         true,
-        `selfDescribingEventData: event(s) have custom parameter "${key}" with expected value`
+        `selfDescribingEventData: event(s) present with expected parameters`
       );
     } else {
       assert(
         false,
-        `selfDescribingEventData: no events with expected parameter and/or value`
+        `selfDescribingEventData: no events matching all given parameters`
       );
     }
     return filtered;
@@ -149,21 +121,23 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "selfDescribingContextData",
   { prevSubject: "true" },
-  (event, key, value) => {
-    console.log(`the events list is ${event.length} long`);
-    console.log(event);
+  (event, parameters) => {
     if (event.length > 1) {
       assert(false, "selfDescribingContextData can only test 1 event");
     }
-    // Assumes only one event is being assessed??!??!?!??!
-    const contexts = event[0].event.contexts.data;
-    const filtered = contexts.filter((context) => {
-      return context.data[key] === value;
+
+    const filtered = event[0].event.contexts.data.filter((context) => {
+      const matchedParameters = Object.keys(parameters).map((key) => {
+        return context.data[key] === parameters[key];
+      });
+      const matchedUnique = [...new Set(matchedParameters)];
+      return matchedUnique.length === 1 && matchedUnique[0] === true;
     });
+
     if (filtered.length > 0) {
       assert(
         true,
-        `selfDescribingContextData: event has context/entity with correct schema, custom parameter "${key}", and expected value`
+        `selfDescribingContextData: event has attached context/entity with expected parameters`
       );
     } else {
       assert(

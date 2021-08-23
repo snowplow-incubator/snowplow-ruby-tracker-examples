@@ -33,7 +33,7 @@ document.addEventListener("turbolinks:load", function () {
         // The specific product is included as an Entity in the Event context.
         context: [
           {
-            schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-0",
+            schema: "iglu:test.example.iglu/product_entity/jsonschema/1-0-1",
             data: productEntityData(product),
           },
         ],
@@ -44,7 +44,6 @@ document.addEventListener("turbolinks:load", function () {
   const purchaseForm = document.getElementById("purchase-form");
   purchaseForm.addEventListener("click", (event) => {
     event.preventDefault();
-    console.log("clicked on purchase form");
 
     const orderTotal = parseFloat(
       document.getElementById("order-total").textContent
@@ -53,7 +52,7 @@ document.addEventListener("turbolinks:load", function () {
     const csrfToken = document.querySelector("[name='csrf-token']").content;
 
     // The purchase could be tracked here using the JS tracker
-    // but it's more appropriate to track purchases server-side.
+    // but it's generally more accurate to track purchases server-side.
     fetch("/purchase", {
       method: "POST",
       headers: {

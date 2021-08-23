@@ -5,8 +5,9 @@ describe("Buying from the shop", () => {
     cy.contains("Green skis").click();
 
     cy.get("#purchase-submit").should("be.disabled");
+    cy.wait(1000);
 
-    cy.get("#basket-add-form").pause().click();
+    cy.get("#basket-add-form").click();
     cy.get("#order-total").should("have.text", "449.99");
 
     cy.go("back");

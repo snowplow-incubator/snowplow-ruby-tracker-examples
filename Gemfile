@@ -30,10 +30,12 @@ gem "bootsnap", ">= 1.4.4", require: false
 gem "snowplow-tracker", "~> 0.6.0"
 
 group :development, :test do
+  gem "dotenv-rails", require: "dotenv/rails-now"
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
-  gem "capybara"
   gem "cypress-on-rails", "~> 1.0"
+  gem "cypress-rails"
+  gem "rspec", "~> 3.10"
   gem "rspec-rails", "~> 5.0.0"
 end
 
