@@ -10,6 +10,7 @@ describe("eCommerce events", () => {
 
     cy.get("#purchase-submit").click();
 
+    // allow time for the events to be collected by Micro
     cy.wait(2000);
 
     cy.goodEvents()

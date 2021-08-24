@@ -7,6 +7,7 @@ describe("Self-describing event", () => {
     cy.visit("shop/brown_skis");
     cy.get("#basket-add-form").click();
 
+    // allow time for the events to be collected by Micro
     cy.wait(2000);
 
     cy.goodEvents()

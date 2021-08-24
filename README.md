@@ -75,7 +75,7 @@ yarn cypress run --project ./spec
 
 This Snowplow shop sells skiing equipment. We want to understand how much traffic the website gets, and how users move through the site. In the shop, we want to track when a product is added to the shopping basket, and when products are purchased.
 
-Both the Ruby and JavaScript Snowplow tracker SDKs are included in this app, for server-side and client-side tracking. This allows tracking of events in the most appropriate way for each event. For example, page views are best tracked client-side, as the client has easy access to information about e.g. IP address. Conversely, CRUD actions or activities such as purchasing, which are processed by the server, should be tracked server-side. Read more about designing tracking in the [Snowplow docs](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/introduction-to-tracking-design/).
+Both the Ruby and JavaScript Snowplow tracker SDKs are included in this app, for server-side and client-side tracking. This allows tracking of events in the most appropriate way for each event. For example, Page Views are best tracked client-side, as the client has easy access to information about e.g. IP address. Conversely, CRUD actions or activities such as purchasing, which are processed by the server, should be tracked server-side. Read more about designing tracking in the [Snowplow docs](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/introduction-to-tracking-design/).
 
 This demo does not include any authentication or database functionality.
 
@@ -318,6 +318,8 @@ The Ruby tracker `domain_userid` is set using the Snowplow method `set_domain_us
 
 @tracker.set_domain_user_id(domain_userid)
 ```
+
+In this app, we have linked the Ruby Page View tracking to setting the `domain_userid`. Since the cookies are set by the JavaScript tracker, the very first Ruby Page View event may lack the `domain_userid` if the JavaScript tracker has not finished inititalising and creating the cookie yet.
 
 ## 5. Testing using Snowplow Micro
 
