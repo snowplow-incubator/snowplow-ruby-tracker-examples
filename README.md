@@ -292,7 +292,7 @@ end
 Snowplow.instance.tracker.track_self_describing_event(purchase_json, context)
 ```
 
-Every event sent by the JavaScript tracker automatically includes a web page entity, whose sole parameter is an ID unique to that page load. This context helps data modelling by allowing the easy identification of events that occurred on the same loaded page. Of course, personalised custom entities can be attached to any event type in addition to the web page entity, to create richer context data.
+Every event sent by the JavaScript tracker (v3+) automatically includes a [web page entity](https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/javascript-tracker-v3/tracker-setup/initialization-options/#webPage_context), whose sole parameter is an ID unique to that page load. This context helps data modelling by allowing the easy identification of events that occurred on the same loaded page. Of course, personalised custom entities can be attached to any event type in addition to the web page entity, to create richer context data.
 
 Events from the Ruby tracker do not have any automatically included context.
 
@@ -369,7 +369,7 @@ it("is emitted by Ruby tracker for purchase activity", () => {
   cy.badEvents().count(0);
 
   // The goodEvents() custom command queries the "/micro/good" API endpoint
-  // and returns all the bad events.
+  // and returns all the good events.
   // The other custom commands check for events which match the arguments given
   cy.goodEvents()
     // Self-describing events are also called "unstruct" events
