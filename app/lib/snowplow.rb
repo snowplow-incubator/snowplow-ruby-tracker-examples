@@ -6,7 +6,7 @@ require "singleton"
 class Snowplow
   include Singleton
 
-  def tracker(domain_userid = "")
+  def tracker(domain_userid = nil)
     return @tracker unless @tracker.nil?
 
     @tracker = SnowplowTracker::Tracker.new(emitter)
@@ -14,7 +14,7 @@ class Snowplow
     # The Ruby tracker does not automatically set a domain_userid.
     # Here, the JavaScript tracker's domain_userid has been passed in as an
     # argument to the tracker during track_page_view, in ApplicationController.
-    if !domain_userid.empty? && @domain_userid_set.nil?
+    if !domain_userid.nil? && @domain_userid_set.nil?
       @tracker.set_domain_user_id(domain_userid)
       @domain_userid_set = true
     end

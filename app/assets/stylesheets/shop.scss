@@ -1,15 +1,17 @@
 // Place all the styles related to the shop controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
-
 #shop img {
-  width: 70%;
   max-width: 600px;
-  float: right;
   margin-left: 2rem;
 }
 
 .products {
+  display: flex;
+}
+
+.items {
+  flex: 1;
   width: 400px;
 }
 

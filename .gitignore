@@ -38,3 +38,5 @@ yarn-debug.log*
 coverage/
 spec/cypress/videos/
 spec/cypress/screenshots/
+
+.DS_Store

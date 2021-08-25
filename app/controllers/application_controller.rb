@@ -17,9 +17,13 @@ class ApplicationController < ActionController::Base
     # This is not essential for the Ruby tracker functionality.
     # Cookie information is only available within Controllers.
 
-    # Page title is a required argument for track page view.
+    # Page title is a required argument for track_page_view.
     # However, the server doesn't automatically have this information.
     # This is one small reason why page views are easier to track client-side.
+    # Conversely, server-side page view tracking is more accurate, as it is not
+    # blocked by adblockers.
+    # It can be useful to compare counts from client- and server-side page views
+    # to see how much effect adblockers are having.
     page_title = nil
     Snowplow.instance.tracker(snowplow_domain_userid).track_page_view(request.original_url, page_title,
                                                                       request.headers["Referer"])

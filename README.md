@@ -11,7 +11,7 @@ An example of how to incorporate [Snowplow](https://snowplowanalytics.com/) trac
 ## Table of Contents
 
 - [Snowplow Ruby tracker examples](#snowplow-ruby-tracker-examples)
-    - [Versions used:](#versions-used)
+  - [Versions used:](#versions-used)
   - [Table of Contents](#table-of-contents)
   - [1. Quick Start](#1-quick-start)
   - [2. Tracking Design and Implementation](#2-tracking-design-and-implementation)
@@ -323,7 +323,7 @@ The Ruby tracker `domain_userid` is set using the Snowplow method `set_domain_us
 @tracker.set_domain_user_id(domain_userid)
 ```
 
-In this app, we have linked the Ruby Page View tracking to setting the `domain_userid`. Since the cookies are set by the JavaScript tracker, the very first Ruby Page View event may lack the `domain_userid` if the JavaScript tracker has not finished inititalising and creating the cookie yet.
+In this app, we have linked the Ruby Page View tracking to setting the `domain_userid`. Since the cookies are set by the JavaScript tracker, the very first Ruby Page View event may lack the `domain_userid` if the JavaScript tracker has not yet finished inititalising and creating the cookie.
 
 ## 5. Testing using Snowplow Micro
 
