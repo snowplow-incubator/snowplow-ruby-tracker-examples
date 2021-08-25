@@ -19,9 +19,10 @@ An example of how to incorporate [Snowplow](https://snowplowanalytics.com/) trac
     - [2.2 Ruby tracker](#22-ruby-tracker)
     - [2.3 JavaScript tracker](#23-javascript-tracker)
   - [3. Event types](#3-event-types)
-  - [4. Matching the domain_userid for both trackers](#4-matching-the-domain_userid-for-both-trackers)
-  - [5. Testing using Snowplow Micro](#5-testing-using-snowplow-micro)
-  - [6. Further information](#6-further-information)
+  - [4. Event context](#4-event-context)
+  - [5. Matching the domain_userid for both trackers](#5-matching-the-domain_userid-for-both-trackers)
+  - [6. Testing using Snowplow Micro](#6-testing-using-snowplow-micro)
+  - [7. Further information](#7-further-information)
 
 ## 1. Quick Start
 
@@ -292,7 +293,15 @@ end
 Snowplow.instance.tracker.track_self_describing_event(purchase_json, context)
 ```
 
-## 4. Matching the domain_userid for both trackers
+## 4. Event context
+
+Each Snowplow event has the option of adding contextual information, by the attachment of entities. Read more Snowplow event structure <mark>XXXhereXXX</mark>. The attached entities are called the context of the event. Like the events themselves, entities are defined by self-describing JSON schemas.
+
+Every event sent by the JavaScript tracker automatically includes a web page entity, whose sole parameter is an ID unique to that page (<mark>does it change if the page is reloaded?</mark>). This context helps data modelling by allowing the easy identification of events that occurred on the same page. Of course, personalised custom entities can be attached to any event type in addition to the web page entity, to create richer context data.
+
+Events from the Ruby tracker do not have any automatically included context.
+
+## 5. Matching the domain_userid for both trackers
 
 The JavaScript tracker sets and uses [cookies](https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/cookies-local-storage/). One of the stored identifiers is the `domain_userid`, a unique identifier for each user. Every event sent from the JavaScript tracker includes this information.
 
@@ -321,7 +330,7 @@ The Ruby tracker `domain_userid` is set using the Snowplow method `set_domain_us
 
 In this app, we have linked the Ruby Page View tracking to setting the `domain_userid`. Since the cookies are set by the JavaScript tracker, the very first Ruby Page View event may lack the `domain_userid` if the JavaScript tracker has not finished inititalising and creating the cookie yet.
 
-## 5. Testing using Snowplow Micro
+## 6. Testing using Snowplow Micro
 
 To confirm that the trackers have been configured correctly, Snowplow provides a minimal data collection pipeline called [Snowplow Micro](https://github.com/snowplow-incubator/snowplow-micro). Micro collects emitted events, and provides an API to analyse them. The Micro config files are included in the `snowplow-micro` folder. The file `iglu.json` informs the schema validator [Iglu](https://github.com/snowplow/iglu) where to find the schemas. For this demo, this GitHub repository is listed directly as an Iglu repository. Read more about Iglu repositories [here](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/iglu-repositories/).
 
@@ -388,7 +397,7 @@ it("is emitted by Ruby tracker for purchase activity", () => {
 
 We recommend designing your own tests, based on your own app, tracking, and needs. These tests are provided as one example of event testing using Cypress and Snowplow Micro. See the [Snowplow Micro examples](https://github.com/snowplow-incubator/snowplow-micro-examples) repository for a more comprehensive example of testing. Other e2e/integration testing libraries can also be used.
 
-## 6. Further information
+## 7. Further information
 
 Detailed information about behavioural data management, and Snowplow tracking and data collection pipelines can be found on the Snowplow [ website](https://snowplowanalytics.com/), [blog](https://snowplowanalytics.com/blog/), [knowledge base](https://snowplowanalytics.com/knowledge-base/) and in the [documentation](https://docs.snowplowanalytics.com/).
 
