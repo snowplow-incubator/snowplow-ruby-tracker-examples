@@ -14,11 +14,6 @@ class ShopController < ApplicationController
     ActionController::Parameters.permit_all_parameters = true
     order_details = params["shop"]
 
-    # The Snowplow Ruby tracker accepts strings or symbols as hash keys
-    # for any context/entity schemas, but eCommerce events currently only accept
-    # the old hash rocket notation.
-    # eCommerce events with JSON-style hash notation will fail silently,
-    # they will not be sent as bad events to Micro.
     transaction = {
                     "order_id" => "ABC-123",
                     "total_value" => order_details["total"]
@@ -52,13 +47,19 @@ class ShopController < ApplicationController
   end
 
   def ecommerce_purchase_event(transaction, order_details)
-    # The Ruby tracker's built-in eCommerce event
-    # is more limited and more complex than the Self-Describing event.
+    # The Ruby tracker's built-in eCommerce event is more limited and more
+    # complex than the Self-Describing event.
     # A "transaction" event is sent, plus individual "transaction_item" events
     # for each unique product in the order.
 
     # To include information about e.g. price reductions, a custom context/entity
     # could be sent with each item.
+
+    # The Snowplow Ruby tracker accepts strings or symbols as hash keys
+    # for any context/entity schemas, but eCommerce events currently only accept
+    # the old hash rocket notation.
+    # eCommerce events with JSON-style hash notation will fail silently;
+    # they will not be sent as bad events to Micro.
     items = order_details["products"].map do |product|
       {
         "sku" => product["sku"],
@@ -83,8 +84,9 @@ class ShopController < ApplicationController
   end
 
   def display_price(product)
-    price = "%.2f" % product["price"].to_s
-    original_price = "%.2f" % product["original_price"].to_s
+    price = format("%.2f", product["price"].to_s)
+
+    original_price = format("%.2f", product["original_price"].to_s)
 
     sale_string = "<strike>£#{original_price}</strike> £#{price}"
     price == original_price ? "£#{price}" : sale_string
