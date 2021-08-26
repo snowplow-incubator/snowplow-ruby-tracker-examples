@@ -11,7 +11,7 @@ An example of how to incorporate [Snowplow](https://snowplowanalytics.com/) trac
 ## Table of Contents
 
 - [Snowplow Ruby tracker examples](#snowplow-ruby-tracker-examples)
-  - [Versions used:](#versions-used)
+    - [Versions used:](#versions-used)
   - [Table of Contents](#table-of-contents)
   - [1. Quick Start](#1-quick-start)
   - [2. Tracking Design and Implementation](#2-tracking-design-and-implementation)
@@ -59,14 +59,11 @@ Run tests:
 # Rails tests
 rspec
 
-# Start the Rails server on port 5017 for Cypress
-bundle exec rails server -e test -p 5017
+# Cypress tests with UI
+rails cypress:open
 
-# Opens the Cypress UI for headed testing
-yarn cypress open --project ./spec
-
-# Or run the tests headless
-yarn cypress run --project ./spec
+# Cypress tests headless
+rails cypress:run
 ```
 
 ## 2. Tracking Design and Implementation

@@ -28,7 +28,11 @@
         }
       })(window, document, "script", "<%= root_url + 'snowplow/sp.js' %>", "snowplow");
 
-      snowplow('newTracker', 'sp', '127.0.0.1:9090');
+      snowplow('newTracker', 'sp', '127.0.0.1:9090', {
+        appId: 'ruby-example',
+        cookieSecure: false,
+        cookieSameSite: 'Lax'
+      });
 
       snowplow('enableActivityTracking', {
         minimumVisitLength: 10,

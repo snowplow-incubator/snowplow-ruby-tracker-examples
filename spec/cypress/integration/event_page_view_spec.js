@@ -19,7 +19,7 @@ describe("Page views", () => {
     });
     cy.goodEvents()
       .hasEventType("page_view", "rb")
-      .eventDetails({ page_url: "http://localhost:5017/", page_urlpath: "/" });
+      .eventDetails({ page_url: "http://127.0.0.1:5017/", page_urlpath: "/" });
   });
 
   it("have correct referrer", () => {
@@ -30,8 +30,8 @@ describe("Page views", () => {
     // allow time for the events to be collected by Micro
     cy.wait(2000);
     cy.goodEvents().eventDetails({
-      page_url: "http://localhost:5017/shop/all_products",
-      page_referrer: "http://localhost:5017/home/about",
+      page_url: "http://127.0.0.1:5017/shop/all_products",
+      page_referrer: "http://127.0.0.1:5017/home/about",
     });
   });
 });
