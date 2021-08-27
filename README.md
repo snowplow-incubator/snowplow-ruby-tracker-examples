@@ -53,7 +53,7 @@ docker run --mount type=bind,source=$(pwd)/snowplow-micro,destination=/config -p
 
 Interact with the site to generate events.
 
-Run tests:
+Before running the Cypress tests, create a `.env` file in the root folder and copy in the code from `.env.example`. Run tests:
 
 ```bash
 # Rails tests
@@ -72,7 +72,7 @@ rails cypress:run
 
 This Snowplow shop sells skiing equipment. We want to understand how much traffic the website gets, and how users move through the site. In the shop, we want to track when a product is added to the shopping basket, and when products are purchased.
 
-Both the Ruby and JavaScript Snowplow tracker SDKs are included in this app, for server-side and client-side tracking. This allows tracking of events in the most appropriate way for each event. For example, Page Views are best tracked client-side, as the client has easy access to information about e.g. IP address. Conversely, CRUD actions or activities such as purchasing, which are processed by the server, should be tracked server-side. Read more about designing tracking in the [Snowplow docs](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/introduction-to-tracking-design/).
+Both the Ruby and JavaScript Snowplow tracker SDKs are included in this app, for server-side and client-side tracking. This allows tracking of events in the most appropriate way for each event. For example, Page Views are often best tracked client-side, as the client has easy access to information about e.g. IP address. However, server-side Page View tracking can be more accurate as no events will be lost to adblockers. CRUD actions or activities such as purchasing, which are processed by the server, should be tracked server-side. Read more about designing tracking in the [Snowplow docs](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/introduction-to-tracking-design/).
 
 This demo does not include any authentication or database functionality.
 
@@ -89,7 +89,7 @@ gem "snowplow-tracker", "~> 0.6.0"
 The tracker is written as a Singleton global object, to avoid reinitializing new Trackers and Emitters on every page load. The tracker set-up code is found in `app/lib/tracker.rb` (only files within `app` auto-reload, so for ease of development the `app/lib` folder is used here instead of `lib`).
 
 ```ruby
-# in snowplow.rb
+# adapted from snowplow.rb
 
 require "snowplow-tracker"
 require "singleton"
@@ -128,10 +128,10 @@ end
 
 ### 2.3 JavaScript tracker
 
-The tag-based [JavaScript tracker](https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/) comes in two parts. The `sp.js` code is found in `public/snowplow` for hosting as part of the app. The script tag is included in the shared `application.html.erb` header.
+The tag-based [JavaScript tracker](https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/) comes in two parts. The `sp.js` code is here placed in `public/snowplow` for hosting as part of the app. The script tag is included in the shared `application.html.erb` header.
 
 ```html
-<! in the head of application.html.erb
+<!-- in the head of application.html.erb -->
 
 <script async="1">
   (function (p, l, o, w, i, n, g) {
@@ -174,7 +174,7 @@ The [Ruby tracker](https://docs.snowplowanalytics.com/docs/collecting-data/colle
 
 However, for all tracker SDKs we strongly recommend using custom Self-Describing events. These are defined by "self-describing" JSON schema rulesets. As the schema are fully customisable, it's possible to track any number of metrics that are important to you. Read more [about event data structures](https://snowplowanalytics.com/blog/2020/01/24/re-thinking-the-structure-of-event-data/) on the Snowplow blog and in the [documentation](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-events-entities/).
 
-Each Snowplow event has the option of adding contextual information, by the attachment of entities. The attached entities are called the context of the event. Like the events themselves, entities are defined by self-describing JSON schemas. For example, this app includes schemas that define a Purchase event, and a Product entity. You can see that the schemas are very similar.
+Each Snowplow event has the option of adding contextual information, by the attachment of entities. The attached entities are called the context of the event. Like the events themselves, entities are defined by self-describing JSON schemas. For example, this app includes schemas that define a Purchase event, and a Product entity. You can see that the schemas look very similar.
 
 ```json
 // example schema for a Purchase event
@@ -289,7 +289,7 @@ end
 Snowplow.instance.tracker.track_self_describing_event(purchase_json, context)
 ```
 
-Every event sent by the JavaScript tracker (v3+) automatically includes a [web page entity](https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/javascript-tracker-v3/tracker-setup/initialization-options/#webPage_context), whose sole parameter is an ID unique to that page load. This context helps data modelling by allowing the easy identification of events that occurred on the same loaded page. Of course, personalised custom entities can be attached to any event type in addition to the web page entity, to create richer context data.
+Every event sent by the JavaScript tracker (v3+) automatically includes a [web page entity](https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/javascript-tracker-v3/tracker-setup/initialization-options/#webPage_context), whose sole parameter is an ID unique to that page load. This context helps data modelling by allowing the easy identification of events that occurred during the same page view. Of course, personalised custom entities can be attached to any event type in addition to the web page entity, to create richer context data.
 
 Events from the Ruby tracker do not have any automatically included context.
 
@@ -320,7 +320,7 @@ The Ruby tracker `domain_userid` is set using the Snowplow method `set_domain_us
 @tracker.set_domain_user_id(domain_userid)
 ```
 
-In this app, we have linked the Ruby Page View tracking to setting the `domain_userid`. Since the cookies are set by the JavaScript tracker, the very first Ruby Page View event may lack the `domain_userid` if the JavaScript tracker has not yet finished inititalising and creating the cookie.
+In this app, we have linked the Ruby Page View tracking to setting the `domain_userid`. Since the cookies are set by the JavaScript tracker, the very first Ruby Page View event may lack the `domain_userid` if the JavaScript tracker has not yet finished initialising and creating the cookie.
 
 ## 5. Testing using Snowplow Micro
 
