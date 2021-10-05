@@ -27,7 +27,7 @@ gem "jbuilder", "~> 2.7"
 gem "bootsnap", ">= 1.4.4", require: false
 
 # Snowplow
-gem "snowplow-tracker", github: "snowplow/snowplow-ruby-tracker", branch: "rubocop"
+gem "snowplow-tracker", github: "snowplow/snowplow-ruby-tracker", branch: "https"
 
 group :development, :test do
   gem "dotenv-rails", require: "dotenv/rails-now"

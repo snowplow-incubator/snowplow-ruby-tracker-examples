@@ -25,7 +25,8 @@ class ApplicationController < ActionController::Base
     # It can be useful to compare counts from client- and server-side page views
     # to see how much effect adblockers are having.
     page_title = nil
-    Snowplow.instance.tracker(snowplow_domain_userid).track_page_view(request.original_url, page_title,
-                                                                      request.headers["Referer"])
+    Snowplow.instance.tracker(snowplow_domain_userid).track_page_view(page_url: request.original_url,
+                                                                      page_title: page_title,
+                                                                      referrer: request.headers["Referer"])
   end
 end
