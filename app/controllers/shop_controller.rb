@@ -14,6 +14,7 @@ class ShopController < ApplicationController
     ActionController::Parameters.permit_all_parameters = true
     order_details = params["shop"]
 
+    # The Snowplow Ruby tracker accepts strings or symbols as hash keys.
     transaction = {
                     "order_id" => "ABC-123",
                     "total_value" => order_details["total"]
@@ -28,7 +29,7 @@ class ShopController < ApplicationController
   private #------------------------------------------
 
   def custom_purchase_event(transaction, order_details)
-    # The self-describing event type allows the grestest flexibility.
+    # The self-describing event type allows the greatest flexibility.
     # One event is sent per purchase, with product entities attached as context.
 
     # This Snowplow shop has become interested in the effects of sales/price reductions on revenue.
@@ -43,7 +44,7 @@ class ShopController < ApplicationController
     context = order_details["products"].map do |product|
       SnowplowTracker::SelfDescribingJson.new(entity_schema, product.to_h)
     end
-    Snowplow.instance.tracker.track_self_describing_event(purchase_json, context)
+    Snowplow.instance.tracker.track_self_describing_event(event_json: purchase_json, context: context)
   end
 
   def ecommerce_purchase_event(transaction, order_details)
@@ -52,28 +53,24 @@ class ShopController < ApplicationController
     # A "transaction" event is sent, plus individual "transaction_item" events
     # for each unique product in the order.
 
-    # To include information about e.g. price reductions, a custom context/entity
-    # could be sent with each item.
+    # To include information about e.g. price reductions, a custom
+    # context/entity could be sent with each item.
 
-    # The Snowplow Ruby tracker accepts strings or symbols as hash keys
-    # for any context/entity schemas, but eCommerce events currently only accept
-    # the old hash rocket notation.
-    # eCommerce events with JSON-style hash notation will fail silently;
-    # they will not be sent as bad events to Micro.
+    # The Snowplow Ruby tracker accepts strings or symbols as hash keys.
     items = order_details["products"].map do |product|
       {
-        "sku" => product["sku"],
-        "price" => product["price"],
-        "quantity" => product["quantity"],
-        "name" => product["name"]
+        sku: product["sku"],
+        price: product["price"],
+        quantity: product["quantity"],
+        name: product["name"]
       }
     end
-    Snowplow.instance.tracker.track_ecommerce_transaction(transaction, items)
+    Snowplow.instance.tracker.track_ecommerce_transaction(transaction: transaction, items: items)
   end
 
-  # We chose not to use a database/CRUD layer for this demo app
-  # to reduce complexity and the number of dependencies.
-  # Product details are stored in a single file instead.
+  # We chose not to use a database/CRUD layer for this demo app to reduce
+  # complexity and the number of dependencies. Product details are stored in a
+  # single file instead.
   def product_details
     import.each_value { |info| info["display_price"] = display_price(info) }
   end

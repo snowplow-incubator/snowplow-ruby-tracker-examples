@@ -4,8 +4,9 @@ An example of how to incorporate [Snowplow](https://snowplowanalytics.com/) trac
 
 ### Versions used:
 
+**Ruby** v3.0.0
 **Rails** v6.1.4  
-**Ruby tracker** v0.6.1  
+**Ruby tracker** v0.8.0  
 **JavaScript tracker** v3.1.0
 
 ## Table of Contents

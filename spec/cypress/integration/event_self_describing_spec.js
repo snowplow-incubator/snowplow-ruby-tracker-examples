@@ -8,7 +8,7 @@ describe("Self-describing event", () => {
     cy.get("#basket-add-form").click();
 
     // allow time for the events to be collected by Micro
-    cy.wait(2000);
+    cy.wait(3000);
 
     cy.goodEvents()
       // Self-describing events are called "unstruct" in the event data
