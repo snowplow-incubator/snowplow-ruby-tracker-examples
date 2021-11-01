@@ -47,8 +47,12 @@ Start Micro:
 
 ```bash
 # run from the root folder of this app
-
-docker run --mount type=bind,source=$(pwd)/snowplow-micro,destination=/config -p 9090:9090 snowplow/snowplow-micro:1.1.2 --collector-config /config/micro.conf --iglu /config/iglu.json
+docker run \
+  --mount type=bind,source=$(pwd)/snowplow-micro,destination=/config \
+  -p 9090:9090 \
+  snowplow/snowplow-micro:1.2.1 \
+  --collector-config /config/micro.conf \
+  --iglu /config/iglu.json
 ```
 
 Interact with the site to generate events.
