@@ -4,7 +4,7 @@ An example of how to incorporate [Snowplow](https://snowplowanalytics.com/) trac
 
 ### Versions used:
 
-**Ruby** v3.0.0
+**Ruby** v3.0.0  
 **Rails** v6.1.4  
 **Ruby tracker** v0.8.0  
 **JavaScript tracker** v3.1.0
@@ -88,7 +88,7 @@ The [Ruby tracker](https://docs.snowplowanalytics.com/docs/collecting-data/colle
 ```ruby
 # in Gemfile
 
-gem "snowplow-tracker", "~> 0.6.0"
+gem "snowplow-tracker", "~> 0.8.0"
 ```
 
 The tracker is written as a Singleton global object, to avoid reinitializing new Trackers and Emitters on every page load. The tracker set-up code is found in `app/lib/tracker.rb` (only files within `app` auto-reload, so for ease of development the `app/lib` folder is used here instead of `lib`).
@@ -105,7 +105,7 @@ class Snowplow
   def tracker
     return @tracker unless @tracker.nil?
 
-    @tracker = SnowplowTracker::Tracker.new(emitter)
+    @tracker = SnowplowTracker::Tracker.new(emitters: emitter)
   end
 
   private
@@ -113,7 +113,7 @@ class Snowplow
   def emitter
     return @emitter unless @emitter.nil?
 
-    @emitter = SnowplowTracker::AsyncEmitter.new("localhost:9090")
+    @emitter = SnowplowTracker::AsyncEmitter.new(endpoint: "localhost:9090")
   end
 end
 ```
@@ -124,10 +124,8 @@ Here, Page View tracking is defined, using the Singleton tracker:
 # in application_controller.rb
 
 def track_page_view
-  page_title = nil
-  Snowplow.instance.tracker.track_page_view(request.original_url,
-                                            page_title,
-                                            request.headers["Referer"])
+  Snowplow.instance.tracker.track_page_view(page_url: request.original_url,
+                                            referrer: request.headers["Referer"])
 end
 ```
 
@@ -272,9 +270,9 @@ This event would have a product entity attached for each product in the order.
 
 This product entity schema is version 1-0-1, as a non-breaking change has been made since the first version. Read more about schema versioning [here](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/versioning-your-data-structures/) and [here](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/common-architecture/schemaver/).
 
-The self-describing JSON schemas are validated by part of the Snowplow data collection pipeline called [Iglu](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/). Read about how to lint the schemas with IgluCTL [here](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/igluctl-2/).
+The self-describing JSON schemas are validated by part of the Snowplow data collection pipeline called [Iglu](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/). Read about how to lint the schemas with IgluCTL [here](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/igluctl-2/).  
 
-Below is Ruby code that creates a purchase event based off these schemas:
+Below is Ruby code that creates a purchase event based off these schemas. Two products have been bought:  
 
 ```ruby
 # Based on code in app/shop_controller.rb
@@ -291,7 +289,8 @@ purchase_json = SnowplowTracker::SelfDescribingJson.new(
 context = ordered_products.map do |product|
   SnowplowTracker::SelfDescribingJson.new(entity_schema, product)
 end
-Snowplow.instance.tracker.track_self_describing_event(purchase_json, context)
+Snowplow.instance.tracker.track_self_describing_event(event_json: purchase_json,
+                                                      context: context)
 ```
 
 Every event sent by the JavaScript tracker (v3+) automatically includes a [web page entity](https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/javascript-tracker-v3/tracker-setup/initialization-options/#webPage_context), whose sole parameter is an ID unique to that page load. This context helps data modelling by allowing the easy identification of events that occurred during the same page view. Of course, personalised custom entities can be attached to any event type in addition to the web page entity, to create richer context data.
@@ -322,26 +321,30 @@ The Ruby tracker `domain_userid` is set using the Snowplow method `set_domain_us
 ```ruby
 # in snowplow.rb
 
-@tracker.set_domain_user_id(domain_userid)
+@tracker.set_domain_user_id(domain_userid) unless domain_userid.nil?
 ```
 
 In this app, we have linked the Ruby Page View tracking to setting the `domain_userid`. Since the cookies are set by the JavaScript tracker, the very first Ruby Page View event may lack the `domain_userid` if the JavaScript tracker has not yet finished initialising and creating the cookie.
 
 ## 5. Testing using Snowplow Micro
 
-To confirm that the trackers have been configured correctly, Snowplow provides a minimal data collection pipeline called [Snowplow Micro](https://github.com/snowplow-incubator/snowplow-micro). Micro collects emitted events, and provides an API to analyse them. The Micro config files are included in the `snowplow-micro` folder. The file `iglu.json` informs the schema validator [Iglu](https://github.com/snowplow/iglu) where to find the schemas. For this demo, this GitHub repository is listed directly as an Iglu repository. Read more about Iglu repositories [here](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/iglu-repositories/).
+To confirm that the trackers have been configured correctly, Snowplow provides a minimal data collection pipeline called [Snowplow Micro](https://github.com/snowplow-incubator/snowplow-micro). Micro collects emitted events, and provides an API to analyse them. The Micro config files are included in the `snowplow-micro` folder. Snowplow pipelines use [Iglu](https://github.com/snowplow/iglu) repositories for schema validation. The file `iglu.json` informs Iglu where to find the standard schemas. The custom schemas are placed in the `iglu-client-embedded` folder, to be automatically accessed by Micro's own Iglu client (a feature added in Snowplow Micro v1.2). Read more about Iglu repositories [here](https://docs.snowplowanalytics.com/docs/pipeline-components-and-applications/iglu/iglu-repositories/).
 
 To start Micro using Docker. The standard port is 9090, configured in the `micro.conf` configuration file.
 
 ```bash
 # run from the root folder of this app
-
-docker run --mount type=bind,source=$(pwd)/snowplow-micro,destination=/config -p 9090:9090 snowplow/snowplow-micro:1.1.2 --collector-config /config/micro.conf --iglu /config/iglu.json
+docker run \
+  --mount type=bind,source=$(pwd)/snowplow-micro,destination=/config \
+  -p 9090:9090 \
+  snowplow/snowplow-micro:1.2.1 \
+  --collector-config /config/micro.conf \
+  --iglu /config/iglu.json
 ```
 
 Snowplow Micro provides four API endpoints, `micro/all`, `micro/good`, `micro/bad`, and `micro/reset`. Visit them in your client at e.g. `http://localhost:9090/micro/good`.
 
-In this app, we use the testing library [Cypress](https://www.cypress.io/) to test event collection. We defined a set of custom Cypress Commands in `spec/cypress/support/commands.js` that relate to Snowplow events. For example, here is a test for a self-describing (custom) purchase event:
+In this app, we use the e2e testing library [Cypress](https://www.cypress.io/) to test event collection. We defined a set of custom Cypress Commands in `spec/cypress/support/commands.js` that relate to Snowplow events. For example, here is a test for a self-describing (custom) purchase event:
 
 ```javascript
 // in spec/cypress/integration/event_self_describing_spec.js
