@@ -1,3 +1,14 @@
+// ***********************************************
+// This example commands.js shows you how to
+// create various custom commands and overwrite
+// existing commands.
+//
+// For more comprehensive examples of custom
+// commands please read more here:
+// https://on.cypress.io/custom-commands
+// ***********************************************
+//
+//
 // These custom Cypress Commands enable testing of events collected by Snowplow Micro.
 // This is an example only, feel free to approach testing in your own way.
 
