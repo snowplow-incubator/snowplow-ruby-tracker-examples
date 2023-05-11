@@ -1,7 +1,0 @@
-{
-  "baseUrl": "http://localhost:5017",
-  "defaultCommandTimeout": 10000,
-  "screenshotsFolder": "tmp/cypress_screenshots",
-  "videosFolder": "tmp/cypress_videos",
-  "trashAssetsBeforeRuns": true
-}
